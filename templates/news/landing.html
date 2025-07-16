@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dev News</title>
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="navbar">
+      <h1 class="logo">Dev News</h1>
+      <nav class="menu">
+        <a href="#">Home</a>
+        <a href="#">Noticias</a>
+        <a href="#">Nosotros</a>
+        <a href="#">Contacto</a>
+      </nav>
+      <div class="auth-buttons">
+        <button class="login">Iniciar sesión</button>
+        <button class="register">Registrar</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- BARRA DE BÚSQUEDA -->
+  <section class="search-bar">
+    <input type="text" placeholder="Buscar noticias..." />
+  </section>
+
+  <!-- CATEGORÍAS Y FILTROS -->
+  <section class="filters">
+    <h2>Categorías</h2>
+    <div class="filter-buttons">
+      <button>Más Antiguas</button>
+      <button>Más Actuales</button>
+      <button>De A a Z</button>
+      <button>De Z a A</button>
+    </div>
+  </section>
+
+  <!-- LISTA DE NOTICIAS -->
+  <main class="news-list">
+    <article class="news-item">
+      <div class="text">
+        <h3>Categoría</h3>
+        <h2>Título y descripción corta</h2>
+        <p>Lorem ipsum dolor sit amet... etc.</p>
+        <a href="#">Seguir leyendo...</a>
+      </div>
+      <div class="image">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python" />
+      </div>
+    </article>
+
+    <article class="news-item">
+      <div class="text">
+        <h3>Categoría</h3>
+        <h2>Título y descripción corta</h2>
+        <p>Lorem ipsum dolor sit amet... etc.</p>
+        <a href="#">Seguir leyendo...</a>
+      </div>
+      <div class="image">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" />
+      </div>
+    </article>
+
+    <article class="news-item">
+      <div class="text">
+        <h3>Categoría</h3>
+        <h2>Título y descripción corta</h2>
+        <p>Lorem ipsum dolor sit amet... etc.</p>
+        <a href="#">Seguir leyendo...</a>
+      </div>
+      <div class="image">
+        <img src="https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg" alt="Java" />
+      </div>
+    </article>
+
+    <article class="news-item">
+      <div class="text">
+        <h3>Categoría</h3>
+        <h2>Título y descripción corta</h2>
+        <p>Lorem ipsum dolor sit amet... etc.</p>
+        <a href="#">Seguir leyendo...</a>
+      </div>
+      <div class="image">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5" />
+      </div>
+    </article>
+  </main>
+</body>
+</html>
