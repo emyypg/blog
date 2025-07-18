@@ -1,7 +1,6 @@
 from django.urls import path
-from .views import landing, index
+from .views import index
 
 urlpatterns = [
-    path('', landing, name='landing'),
-    path('home/', index, name='home'),
+    path('', index, name='home'),  # ahora index.html se muestra en la raíz "/"
 ]

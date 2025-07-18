@@ -1,10 +1,5 @@
 from django.shortcuts import render
 
-def index(request):
-    return render(request, 'news/index.html')
-
-def landing(request):
-    return render(request, 'news/landing.html') 
-
+# Vista principal del sitio (usa index.html que extiende de base.html)
 def index(request):
     return render(request, 'news/index.html')
