@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, Http404
-from .models import Post, Comentario, Categoria # Asegúrate de importar tu modelo Post
+from .models import Categoria, Post, Comentario # Asegúrate de importar tu modelo Post
 
 # Vista principal del sitio (usa index.html que extiende de base.html)
 def index(request):

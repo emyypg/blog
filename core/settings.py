@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.news.apps.NewsConfig',  # Asegúrate de que tu app esté registrada aquí
+    'appusuarios.apps.AppusuariosConfig',  # Asegúrate de que tu app de usuarios esté registrada
 ]
 
 MIDDLEWARE = [
