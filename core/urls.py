@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include  # 👈 importamos include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.urls import path, include
+from apps.news import views  # Asegúrate de importar tus vistas
 
 urlpatterns = [
     path('admin/', admin.site.urls),

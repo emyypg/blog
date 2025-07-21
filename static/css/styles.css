@@ -50,3 +50,9 @@
 .btn.register:hover {
   background-color: #d0e4ff;
 }
+.contenedor{
+    background-color: rgb(225, 225, 225);
+    width: 75vw;
+    max-width: 320px;
+    margin: auto;
+}

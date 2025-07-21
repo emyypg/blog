@@ -5,10 +5,10 @@
     {% for post in posts %}
     <div class="row mb-4">
         <div class="col-md-8">
-            <h6 class="categoria">{{ post.categoria.nombre }}</h6>
+            <h6 class="autor">{{ post.autor }}</h6>
             <h5 class="titulo">{{ post.titulo }}</h5>
-            <p class="descripcion">{{ post.descripcion|truncatechars:150 }}</p>
-            <a href="{% url 'post_detail' post.id %}" class="leer-mas">Seguir leyendo...</a>
+            <p class="descripcion">{{ post.contenido | truncatechars:150 }}</p>
+            <a href="{% url 'news:post_detail' post.pk %}" class="leer-mas">Seguir leyendo...</a>
         </div>
         <div class="col-md-4">
             <img src="{{ post.imagen.url }}" class="img-fluid" alt="{{ post.titulo }}">

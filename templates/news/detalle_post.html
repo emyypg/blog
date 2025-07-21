@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1> {{post}} </h1>
+    <p>{{post.titulo}}</p>
+    <p>{{post.fecha_publicacion}}</p>
+    <p>{{post.categorias}}</p>
+    <p>{{post.contenido}}</p>
+    <p>Autor: {{post.autor}}</p>
+
+    <hr>
+        <h3>Comentarios</h3>
+        {% for com in comentarios %}
+        <div class="contenedor">
+        <div class="row mb-2">
+        <div class="col-md-16">
+            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-8 shadow-sm h-md-250 position-relative">
+                <div class="col p-4 d-flex flex-column position-static">
+                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{ com.usuario }} 
+                    </strong>
+                    <h3 class="mb-0"><strong> comentario: {{ com.contenido }}</strong></h3>
+                    <div class="mb-1 text-body-secondary"> {{ com.fecha_creacion }}</div>
+
+            <title>Placeholder</title>
+        {% endfor %}
+        </div>
+        </div>
+        </div>
+
+        
+    <hr>
+</div>
+{% endblock %} 
