@@ -3,11 +3,12 @@
 
 {% block titulo %} LOGIN {% endblock titulo %}
 
-{% block contenido %}
+{%block content%}
+
 <form method="POST"> {% csrf_token %}
 
     <h2>LOGIN</h2>
-     {% if form.errors%}
+    {% if form.errors%}
         <div class="alert alert-danger">
             {% for field,errors in form.errors.items %}
                 {% for error in errors %}
@@ -24,7 +25,7 @@
         </div>
     {% endif %}
     <h3>Iniciar sesión</h3>
-    <from method="POST"> {% csrf_token %}
+    <from metho="POST"> {% csrf_token %}
     <input type="username" name="username" placeholder="Username">
     <input type="password" name="password" placeholder="Contraseña">
     <input type="hidden" name="next" value="{{next}}" />
@@ -37,6 +38,6 @@
     <br>
     <h2>¿No tienes una cuenta?</h2>
      <h3><a  href="{% url 'usuarios:registro' %}" style="color: #d81ce9;">Registrar</a></h3>
-{% endblock contenido %}     
+{%endblock content%}     
 
     

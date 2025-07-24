@@ -6,11 +6,7 @@ from .models import Usuario
 class RegistroForm(UserCreationForm):
     email = forms.EmailField(label='Correo', required=True)
     first_name = forms.CharField(label='Nombre', required=True)
-    last_name = forms.CharField(label='apellido', required=True)
-    password1 = forms.CharField(
-        label='contraseña', widget=forms.PasswordInput, required=True)
-    password2 = forms.CharField(
-        label='contraseña2', widget=forms.PasswordInput, required=True)
+    last_name = forms.CharField(label='Apellido', required=True)
 
     class Meta:
         model = Usuario

@@ -7,5 +7,6 @@ from .forms import RegistroForm
 
 class Registro(CreateView):
     form_class = RegistroForm
-    success_url = reverse_lazy('login')  # Redirige al login después del registro
+    success_url = reverse_lazy('usuarios:login')  # Redirige al login después del registro
     template_name = 'usuarios/registro.html'  # Asegúrate de que esta plantilla exista
+

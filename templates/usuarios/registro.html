@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{%block contenido%}
+{%block content%}
 
 <h2>REGISTRO</h2> 
 <br>
@@ -10,11 +10,11 @@
         {{form.as_table}}   
     </table>
     <br>
-    <p><input type="submit"></p> 
+    <button type="submit">Registrar</button> 
 </form> 
 
 <h2>¿Ya tienes una cuenta? <a 
-    href="{% url 'login' %}" style="color: #d81ce9;">Iniciar sesión</a></h2>
+    href="{% url 'usuarios:login' %}" style="color: #d81ce9;">Iniciar sesión</a></h2>
   
     
-{%endblock contenido%}   
+{%endblock content%}   
