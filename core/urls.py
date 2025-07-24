@@ -6,7 +6,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.news.urls')),  # 👈 conectamos a tu app
-    path("usuarios/", include("usuarios.urls", namespace="usuarios")),  # 👈 conectamos a tu app de usuarios
+    path("usuarios/", include("apps.usuarios.urls")),  # 👈 conectamos a tu app de usuarios
 
 ]
 
