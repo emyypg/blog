@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config, Csv
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.news',
+    'apps.news.apps.NewsConfig',  # Asegúrate de que tu app esté registrada aquí
+    'apps.usuarios.apps.AppusuariosConfig',  # Asegúrate de que tu app de usuarios esté registrada
 ]
 
 MIDDLEWARE = [
@@ -145,3 +147,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media files
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+AUTH_USER_MODEL = 'usuarios.Usuario'  # Asegúrate de que tu modelo de usuario personalizado esté configurado correctamente
+LOGIN_REDIRECT_URL = reverse_lazy('news:home')
+LOGOUT_REDIRECT_URL = reverse_lazy('news:home')
