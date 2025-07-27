@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo%} Noticias {%endblock titulo%}
+
+{% block content%}
+<h1>Agregar Post</h1>
+<br>
+{{ form.errors }}
+<form action="" method="post" enctype="multipart/form-data">{% csrf_token %}<!-- el  enctype="multipart/form-data" es para admsitir el envío de archivos o imagenes, que se estan incluyendo en el formulario -->
+    {{ form.as_p }}
+    <br>
+    <div><input type="submit" value="Publicar Post"> <button type="button" class="btn btn-primary"><a class="nav-link" href="{% url 'news:home' %}">Cancelar y volver</a></button></div>
+</form>
+
+{% endblock content%}

@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from .models import Categoria, Post, Comentario # Asegúrate de importar tu modelo Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
@@ -70,4 +71,15 @@ def post_detail(request, pk):
       raise Http404('El Post seleccionado no existe')
 
     return render(request, 'news/detalle_post.html',contexto)
+
+def agregar_post(request):
+    if request.method == 'POST':
+        form =PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('news:home')
+    else:
+        form = PostForm()
+
+    return render(request, 'news/agregar_post.html', {'form': form})
 
