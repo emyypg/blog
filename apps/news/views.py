@@ -1,11 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from .models import Categoria, Post, Comentario # Asegúrate de importar tu modelo Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from django.views import View
+from django.urls import reverse_lazy
 
 # Vista principal del sitio (usa index.html que extiende de base.html)
 def index(request):
@@ -72,14 +73,98 @@ def post_detail(request, pk):
 
     return render(request, 'news/detalle_post.html',contexto)
 
+
+@login_required
 def agregar_post(request):
+    """
+    Vista para agregar un nuevo post.
+    Maneja la lógica de validación del formulario y guarda el post.
+    """
     if request.method == 'POST':
-        form =PostForm(request.POST, request.FILES)
+        # Instancia el formulario con los datos POST y los archivos (para la imagen)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            return redirect('news:home')
+            # No guardes el formulario directamente si necesitas asignar el autor
+            post = form.save(commit=False)
+            # Asigna el autor del post al usuario actualmente logueado
+            # El decorador @login_required garantiza que request.user es un usuario autenticado.
+            post.autor = request.user
+
+            try:
+                post.save() # Guarda el objeto Post en la base de datos
+                # Guarda los datos Many-to-Many (como categorías)
+                # Esto es necesario después de que el objeto principal (post) ha sido guardado.
+                form.save_m2m()
+
+                # Redirige a la página 'home' de la aplicación 'news'
+                return redirect('news:home')
+            except Exception as e:
+                # Captura cualquier error durante el guardado y lo imprime para depuración
+                print(f"Error al guardar el post: {e}")
+                # Puedes añadir un mensaje de error al formulario o al contexto aquí
+                # form.add_error(None, "Hubo un error al guardar el post. Inténtalo de nuevo.")
+        else:
+            # Si el formulario no es válido, imprime los errores en la consola para depuración
+            print("Errores del formulario:")
+            print(form.errors)
+            # La plantilla se renderizará con los errores automáticamente si los manejas.
+
     else:
+        # Si la solicitud es GET, crea un formulario vacío
         form = PostForm()
 
+    # Renderiza la plantilla con el formulario (vacío o con errores)
     return render(request, 'news/agregar_post.html', {'form': form})
 
+@login_required
+def eliminar_post(request, pk):
+    post = Post.objects.get(pk =pk)
+    post = get_object_or_404(Post, pk=pk)
+    contexto = {'posts': post}
+    if request.method == 'POST':
+        post.delete()
+        return redirect('news:home')
+    return render(request, 'news/detalle_post.html', contexto)
+
+ 
+
+@login_required
+def editar_post(request, pk):
+    # obtengo la noticia y si no existe tira error
+    post = get_object_or_404(Post, pk=pk)
+    # si se aprieta el boton de guardar cambios manda la info a travez de POST 
+    if request.method == 'POST':
+        # inicializamos el formulario con el parametro instance, que es un parametro que se necesita para actualizar una instancia de la BD
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('news:post_detail', pk=post.pk) 
+
+    else:
+        form = PostForm(instance=post)
+   
+    return render(request, 'news/editar_post.html',{'form': form, 'post': post})
+
+@login_required
+def Comentar_Post(request):
+    comentario = request.POST.get('comentario', None)
+    user = request.user
+    post_a_comentar = request.POST.get('id_post', None)
+    post = Post.objects.get(pk=post_a_comentar)
+    coment = Comentario.objects.create(
+    usuario=user, post=post, texto=comentario)
+    return redirect(reverse_lazy('news:post_detail', kwargs={"pk": noti}))
+
+class EditarComentario(View):
+    def get(self, request, pk):
+        comment = Comentario.objects.get(pk=pk) # extraemos el objeto de comentarios con igual pk
+        post = comment.post 
+        return render(request, 'news/editar_comentario.html', {'comment': comment, 'post': post})
+
+    def post(self, request, pk):
+        comment = Comentario.objects.get(pk=pk)
+        nuevo_contenido = request.POST.get('texto')
+        comment.texto = nuevo_contenido
+        comment.save()
+        post = comment.post      # buscamos de que noticia es el comentario para sarlo para redireccionarme a la misma despues de editarla
+        return redirect('news:post_detail', pk=post.pk)

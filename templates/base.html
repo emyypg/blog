@@ -5,25 +5,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dev News</title>
-  <!-- Bootstrap 5 CDN -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Tu hoja de estilos personalizada -->
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
-  <!-- Navbar -->
- <div>
+  <div>
     {% include "navbar.html" %}
-</div>
-    <!-- Aquí va el contenido específico de cada página -->
-    {% block content %}
-
-    {% endblock %}
-    <br>
-    <br>
   </div>
 
-  <!-- Bootstrap JS -->
+  <div class="main-content-wrapper"> {# ¡Nuevo contenedor! #}
+    <main> {# <main> sigue siendo el contenedor semántico para tu block content #}
+      {% block content %}
+
+      {% endblock content %}
+    </main>
+    <br>
+    <br>
+  </div> {# Cierre del nuevo contenedor principal #}
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
