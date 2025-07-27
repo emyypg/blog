@@ -15,29 +15,12 @@
  <div>
     {% include "navbar.html" %}
 </div>
-  <!-- Contenido principal -->
-  <div class="container mt-4">
-    <!-- Buscador -->
-    <div class="text-center mb-3">
-      <input
-        class="form-control search-input"
-        type="text"
-        placeholder="Buscar noticias..."
-        aria-label="Buscar noticias"
-      />
-    </div>
-
-    <!-- Filtros -->
-    <div class="text-center mb-4">
-      <button class="btn btn-outline-dark btn-sm mx-1">Más Antiguas</button>
-      <button class="btn btn-outline-dark btn-sm mx-1">Más Actuales</button>
-      <button class="btn btn-outline-dark btn-sm mx-1">De A a Z</button>
-      <button class="btn btn-outline-dark btn-sm mx-1">De Z a A</button>
-    </div>
-
     <!-- Aquí va el contenido específico de cada página -->
     {% block content %}
+
     {% endblock %}
+    <br>
+    <br>
   </div>
 
   <!-- Bootstrap JS -->

@@ -1,6 +1,62 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load posts_filters %}
+
+{% block title %} Posts {% endblock %}
 
 {% block content %}
+{% block  barra_busqueda %}
+    <div class="container">
+        <div class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+                <form method="get">
+                    <div class="form">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control form-input" placeholder="Buscar..." name="buscar" value="{{ request.GET.buscar|default:'' }}">
+                        <span class="left-pan"></i></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock barra_busqueda %}
+
+<aside>
+    <div class="p-4">
+        <h3 class="fst-italic">Categorias</h3>
+        <ul class="list-inline mb-0">
+            <li class="list-inline-item">
+                {# "Todas" link: should clear ALL filters #}
+                <a href="{% url 'news:home' %}">Todas</a>
+            </li>
+            {% for c in categorias %}
+                <li class="list-inline-item">
+                    {# Use url_with_new_params to set 'id' and preserve others #}
+                    {# If you want to clear 'buscar', 'fecha', 'orden' when selecting a category, add them to the tag with value='' or None #}
+                    <a href="{% url 'news:home' %}?{% url_with_new_params id_categoria=c.pk %}">
+                        {{ c.nombre }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</aside>
+
+{% if user.is_superuser or user.is_staff %}
+    <hr>
+    <button type="button" class="btn btn-primary"><a class="nav-link" href="{#}"> Agregar Noticia</a></button>
+{% endif %}
+
+<hr>
+
+{# ORDERING LINKS: Use url_with_new_params to set sort order and preserve other parameters #}
+<a href="{% url 'news:home' %}?{% url_with_new_params fecha_publicacion='asc' %}">Más antiguas</a>
+<a href="{% url 'news:home' %}?{% url_with_new_params fecha_publicacion='des' %}">Más actuales</a>
+<a href="{% url 'news:home' %}?{% url_with_new_params orden='asc' %}">De A a Z</a>
+<a href="{% url 'news:home' %}?{% url_with_new_params orden='des' %}">De Z a A</a>
+
+<hr>
+
 <div class="container">
     {% for post in posts %}
     <div class="row mb-4">
@@ -8,6 +64,7 @@
             <h6 class="autor">{{ post.autor }}</h6>
             <h5 class="titulo">{{ post.titulo }}</h5>
             <p class="descripcion">{{ post.contenido | truncatechars:150 }}</p>
+            <p class="fecha">{{ post.fecha_publicacion|date:"d M Y" }}</p>
             <a href="{% url 'news:post_detail' post.pk %}" class="leer-mas">Seguir leyendo...</a>
         </div>
         <div class="col-md-4">
@@ -17,4 +74,4 @@
     <hr>
     {% endfor %}
 </div>
-{% endblock %}
+{% endblock content %}
