@@ -23,7 +23,7 @@ def index(request):
             Q(titulo__icontains=queryset_buscar) | 
             Q(contenido__icontains=queryset_buscar)|
             Q(categorias__nombre__icontains=queryset_buscar)
-        ).distinct
+        ).distinct()
     # Filtramos por categoría si se proporciona
     if id_categoria:
         base_posts_queryset = base_posts_queryset.filter(categorias__id=id_categoria)
