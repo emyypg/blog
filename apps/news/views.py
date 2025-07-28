@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse, Http404
 from .models import Categoria, Post, Comentario # Asegúrate de importar tu modelo Post
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .forms import PostForm
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -61,17 +59,13 @@ def filtrar_posts(posts_queryset, fecha_parametro, orden_parametro):
     return posts_queryset # Return the modified (ordered) queryset
 
 def post_detail(request, pk):
-    contexto = {}
-    try:
-      # Obtenemos el id del post desde la URL    data = Post.objects.Get.get(pk=pk)
-      data = Post.objects.get(pk=pk)  # Obtenemos el post por su id
-      contexto['post'] = data
-      comentarios = Comentario.objects.filter(post=data)# Obtenemos los comentarios del post
-      contexto['comentarios'] = comentarios
-    except Post.DoesNotExist:
-      raise Http404('El Post seleccionado no existe')
-
-    return render(request, 'news/detalle_post.html',contexto)
+    post = get_object_or_404(Post, pk=pk) # Esto ya lanza Http404 si no encuentra el post
+    comentarios = Comentario.objects.filter(post=post)
+    contexto = {
+        'post': post,
+        'comentarios': comentarios
+    }
+    return render(request, 'news/detalle_post.html', contexto)
 
 
 @login_required
@@ -118,15 +112,23 @@ def agregar_post(request):
 
 @login_required
 def eliminar_post(request, pk):
-    post = Post.objects.get(pk =pk)
-    post = get_object_or_404(Post, pk=pk)
-    contexto = {'posts': post}
-    if request.method == 'POST':
-        post.delete()
-        return redirect('news:home')
-    return render(request, 'news/detalle_post.html', contexto)
+    post = get_object_or_404(Post, pk=pk) # Solo esta línea para obtener el post
 
- 
+    # Verifica si el usuario tiene permiso para eliminar (opcional pero recomendado)
+    # if request.user != post.autor and not request.user.is_superuser:
+    #    raise Http404("No tienes permiso para eliminar este post.")
+
+    if request.method == 'POST':
+        # Si la solicitud es POST, significa que el usuario confirmó la eliminación
+        post.delete() # ¡Esta línea borra el post!
+        print(f"Post con ID {pk} y título '{post.titulo}' eliminado correctamente.") # Para depuración
+        return redirect('news:home') # Redirige a la página principal o de lista de posts
+
+    # Si la solicitud es GET, se muestra la página de confirmación de eliminación
+    # Asegúrate de pasar el objeto 'post' al contexto con la clave 'post' (singular)
+    # Y renderiza la plantilla correcta para la confirmación
+    return render(request, 'news/delete_post.html', {'post': post})
+
 
 @login_required
 def editar_post(request, pk):
@@ -147,24 +149,36 @@ def editar_post(request, pk):
 
 @login_required
 def Comentar_Post(request):
-    comentario = request.POST.get('comentario', None)
+    comentario_texto = request.POST.get('comentario', None) # Renombrar para evitar confusión
     user = request.user
-    post_a_comentar = request.POST.get('id_post', None)
-    post = Post.objects.get(pk=post_a_comentar)
+    post_id = request.POST.get('id_post', None) # Renombrar para claridad
+
+    post = get_object_or_404(Post, pk=post_id) # Usar get_object_or_404
+
+    # Asegúrate de que 'comentario_texto' no sea None o vacío si es requerido
+    if not comentario_texto:
+        # Puedes añadir un mensaje de error o redirigir con un error
+        return redirect('news:detalle_post.html', pk=post.pk) # O mostrar un error al usuario
+
     coment = Comentario.objects.create(
-    usuario=user, post=post, texto=comentario)
-    return redirect(reverse_lazy('news:post_detail', kwargs={"pk": noti}))
+        autor=user, # Cambiado de 'usuario' a 'autor' (según tu modelo Comentario)
+        post=post,
+        contenido=comentario_texto # Cambiado de 'texto' a 'contenido' (según tu modelo Comentario)
+    )
+    # 'noti' no está definido. Debe ser 'post.pk'
+    return redirect(reverse_lazy('news:detalle_post.html', kwargs={"pk": post.pk}))
 
 class EditarComentario(View):
     def get(self, request, pk):
-        comment = Comentario.objects.get(pk=pk) # extraemos el objeto de comentarios con igual pk
-        post = comment.post 
+        comment = get_object_or_404(Comentario, pk=pk)
+        post = comment.post
         return render(request, 'news/editar_comentario.html', {'comment': comment, 'post': post})
 
     def post(self, request, pk):
-        comment = Comentario.objects.get(pk=pk)
-        nuevo_contenido = request.POST.get('texto')
-        comment.texto = nuevo_contenido
+        comment = get_object_or_404(Comentario, pk=pk)
+        # Asegúrate de que el 'name' del textarea en el HTML sea 'contenido'
+        nuevo_contenido = request.POST.get('contenido')
+        comment.contenido = nuevo_contenido # Cambiado de 'texto' a 'contenido'
         comment.save()
-        post = comment.post      # buscamos de que noticia es el comentario para sarlo para redireccionarme a la misma despues de editarla
-        return redirect('news:post_detail', pk=post.pk)
+        post = comment.post
+        return redirect('news:detalle_post.html', pk=post.pk)

@@ -68,11 +68,11 @@
         </div>
 
         <div class="form-group">
-            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
-            {{ form.password }}
-            {% if form.password.errors %}
+            <label for="{{ form.password1.id_for_label }}">Contraseña:</label>
+            {{ form.password1 }} {# ¡Asegúrate de que sea 'password1' aquí! #}
+            {% if form.password1.errors %}
                 <div class="error-message">
-                    {% for error in form.password.errors %}
+                    {% for error in form.password1.errors %}
                         <p>{{ error }}</p>
                     {% endfor %}
                 </div>
@@ -81,7 +81,7 @@
 
         <div class="form-group">
             <label for="{{ form.password2.id_for_label }}">Confirmar contraseña:</label>
-            {{ form.password2 }}
+            {{ form.password2 }} {# ¡Y aquí debe ser 'password2'! #}
             {% if form.password2.errors %}
                 <div class="error-message">
                     {% for error in form.password2.errors %}
