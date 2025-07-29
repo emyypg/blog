@@ -2,7 +2,7 @@
 
 /* Estilos para el Navbar (mantienen su diseño original) */
 .navbar {
-  background-color: #fff;
+  /* background-color: #fff; */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -69,7 +69,7 @@
 /* ESTILOS PARA EL BODY Y EL NUEVO CONTENEDOR PRINCIPAL */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    /* background-color: #f4f4f4; */
     display: flex; /* Hacemos el body un flex container */
     flex-direction: column; /* Apilamos los hijos (navbar, main-content-wrapper) verticalmente */
     min-height: 100vh;
@@ -98,7 +98,7 @@ body {
     width: 100%;
     max-width: 400px; /* Limita el ancho del formulario */
     padding: 20px;
-    background-color: #fff;
+    /* background-color: #fff; */
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     text-align: center; /* Centra el texto dentro del formulario */
