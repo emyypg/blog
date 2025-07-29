@@ -1,16 +1,39 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block titulo%} Post {%endblock titulo%}
 {% block content %}
+
+{% if user.is_superuser or user.is_staff %}
+    <div class="text-center my-3"> {# Añade un div contenedor y las clases de Bootstrap #}
+        <a href="{% url 'news:editar_post' post.pk %}" class="btn btn-primary">Editar Post</a>
+    </div>
+    <hr>
+{% endif %}
+
 <div class="container">
     <h1> {{post}} </h1>
+    <img src="{{post.imagen.url}}" alt="" width="300">
     <p>{{post.titulo}}</p>
     <p>{{post.fecha_publicacion}}</p>
     <p>{{post.categorias}}</p>
     <p>{{post.contenido}}</p>
     <p>Autor: {{post.autor}}</p>
-
+    <br>
     <hr>
+
+    {% if user.is_authenticated %}
+    <h3>Comentá algo aquí</h3>
+    <form action="{% url 'news:comentar' %}" method="post">{% csrf_token %}
+
+        <textarea name="comentario" cols="30" rows="3"></textarea>
+        <input type="text" name="id_post" value="{{ post.pk }}" hidden="">
+        <input type="submit" value="comentar">
+    </form>
+
+
+    <br>
+
         <h3>Comentarios</h3>
         {% for com in comentarios %}
         <div class="contenedor">
@@ -31,5 +54,18 @@
 
         
     <hr>
+    <hr>
+
+
+    {% if user.is_superuser or user.is_staff %}
+        <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="{% url 'news:eliminar_post' post.pk %}"> eliminar post</a></button>
+    {% endif %}
+    
+    {% else %}
+        <h3>¿Quieres comentar, y ver las opiniones de los demás?</h3> 
+        <h2> LOGEATE </h2>
+        <button type="button" class="btn btn-primary"><a class="nav-link" href="{% url 'usuarios:login' %}?next={{ request.path }}"> iniciar
+        sesion</a></button>
+    {% endif %}
 </div>
 {% endblock %} 

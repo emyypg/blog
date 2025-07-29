@@ -7,4 +7,9 @@ app_name = 'news'  # Define el nombre de la aplicación para el espacio de nombr
 urlpatterns = [
     path('', index, name='home'),  # ahora index.html se muestra en la raíz "/"
     path('post_detail/<int:pk>/', post_detail, name='post_detail'),  # Detalle del post
+    path('add_post', agregar_post, name='agregar_post'),
+    path('<int:pk>/editar_post', editar_post, name='editar_post'),
+    path('<int:pk>/delete_post', eliminar_post, name='eliminar_post'),
+    path('comentario', Comentar_Post, name='comentar'),
+    path('<int:pk>/editar_comentario/', EditarComentario.as_view(), name='editar_cometario'),
 ]

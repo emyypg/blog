@@ -1,3 +1,6 @@
+/* static/css/styles.css */
+
+/* Estilos para el Navbar (mantienen su diseño original) */
 .navbar {
   background-color: #fff;
   display: flex;
@@ -50,9 +53,117 @@
 .btn.register:hover {
   background-color: #d0e4ff;
 }
-.contenedor{
+
+/* ELIMINAR O COMENTAR esta regla si ya no usas .contenedor en tu HTML */
+/* Si no tienes un div con class="contenedor" en tu HTML, esta regla es inofensiva pero innecesaria. */
+/* Si lo tienes en otras partes y te está causando problemas, debes revisar si necesitas esa clase o si se puede refactorizar. */
+/*
+.contenedor {
     background-color: rgb(225, 225, 225);
     width: 75vw;
     max-width: 320px;
     margin: auto;
+}
+*/
+
+/* ESTILOS PARA EL BODY Y EL NUEVO CONTENEDOR PRINCIPAL */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex; /* Hacemos el body un flex container */
+    flex-direction: column; /* Apilamos los hijos (navbar, main-content-wrapper) verticalmente */
+    min-height: 100vh;
+    margin: 0;
+    padding: 0; /* Quitamos el padding del body para que el navbar ocupe todo el ancho si lo desea */
+    box-sizing: border-box;
+}
+
+.main-content-wrapper {
+    /* Aquí centramos el contenido del formulario */
+    display: flex;
+    justify-content: center; /* Centra el contenido (tu <main>) horizontalmente */
+    align-items: flex-start; /* Alinea el contenido al inicio (arriba) verticalmente */
+    flex-grow: 1; /* Permite que este contenedor ocupe el espacio restante */
+    padding: 20px; /* Agregamos el padding que quitamos del body aquí */
+    box-sizing: border-box;
+    width: 100%; /* Ocupa todo el ancho disponible del padre */
+}
+
+
+/* ESTILOS ESPECÍFICOS DEL REGISTRO (SIN CAMBIOS MAYORES AQUÍ) */
+.registro-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; /* Limita el ancho del formulario */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center; /* Centra el texto dentro del formulario */
+}
+
+.registro-form {
+    width: 100%;
+}
+
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left; /* Alinea etiquetas y campos a la izquierda */
+    width: 100%;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="password"],
+.form-group input[type="email"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button[type="submit"] {
+    background-color: #d81ce9;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+button[type="submit"]:hover {
+    background-color: #a000b0;
+}
+
+a {
+    text-decoration: none;
+    color: #d81ce9;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+    text-align: left;
 }

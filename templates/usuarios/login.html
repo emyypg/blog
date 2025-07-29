@@ -3,41 +3,62 @@
 
 {% block titulo %} LOGIN {% endblock titulo %}
 
-{%block content%}
+{% block content %}
 
-<form method="POST"> {% csrf_token %}
+<div class="login-container"> 
+    <h2>INICIAR SESIÓN</h2>
+    <br>
 
-    <h2>LOGIN</h2>
-    {% if form.errors%}
-        <div class="alert alert-danger">
-            {% for field,errors in form.errors.items %}
-                {% for error in errors %}
-                    {% if form.non_field_errors%}
-                        {% for error in form.non_field_errors %}
-                            <p>Por favor, asegúrese de que su nombre de usuario y contraseña son correctos.Tenga en cuenta que ambos campos son sensibles a mayúsculas/minúscula</p>
-                        {% endfor %}
-                    {% else%}
-                        <p class="error">{{field}} : {{error}}</p>
-                    {% endif %}
+    <form method="POST" class="login-form"> 
+        {% csrf_token %}
+
+        {# Muestra los errores NO relacionados con un campo específico (como credenciales inválidas) #}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger error-message" style="text-align: center;">
+                {% for error in form.non_field_errors %}
+                    <p>Por favor, asegúrese de que su nombre de usuario y contraseña son correctos. Tenga en cuenta que ambos campos son sensibles a mayúsculas/minúsculas.</p>
                 {% endfor %}
-            {% endfor %}
-            
-        </div>
-    {% endif %}
-    <h3>Iniciar sesión</h3>
-    <from metho="POST"> {% csrf_token %}
-    <input type="username" name="username" placeholder="Username">
-    <input type="password" name="password" placeholder="Contraseña">
-    <input type="hidden" name="next" value="{{next}}" />
-    <input href="{% url 'news:home' %}" type="submit"> 
+            </div>
+        {% endif %}
 
+        {# Campo de Nombre de Usuario #}
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Nombre de usuario:</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <div class="error-message">
+                    {% for error in form.username.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {# Campo de Contraseña #}
+        <div class="form-group">
+            <label for="{{ form.password.id_for_label }}">Contraseña:</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <div class="error-message">
+                    {% for error in form.password.errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <input type="hidden" name="next" value="{{ next }}" />
+
+        <br>
+        <button type="submit">Entrar</button> 
     </form>
-    <br>
-    <br>
+    
     <br>
     <br>
     <h2>¿No tienes una cuenta?</h2>
-     <h3><a  href="{% url 'usuarios:registro' %}" style="color: #d81ce9;">Registrar</a></h3>
-{%endblock content%}     
+    <h3><a href="{% url 'usuarios:registro' %}" style="color: #d81ce9;">Registrarse</a></h3>
+</div>
+
+{% endblock content %}  
 
     
