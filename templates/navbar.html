@@ -1,3 +1,4 @@
+{% load static %}
 <header
     class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
     <div class="col-md-3 mb-2 mb-md-0">
@@ -7,14 +8,21 @@
             </svg>
         </a>
     </div>
-    <ul class="nav col-0 col-md-auto mb-2 justify-content-left mb-md-0">
-        {% comment %} <li class="nav-item">   {% endcomment %} 
-        <li id="icono-izquierda">
-            <h3>DevNews
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu" viewBox="0 0 16 16"></svg>
-            </h3>
+
+    {% comment %} logo {% endcomment %}
+    <ul class="d-flex align-items-center nav col-0 col-md-auto mb-2 justify-content-left mb-md-0">
+        <li class="col-6 logo">
+            <a href="{% url 'news:home' %}">
+                <img src="{% static 'img/favicon.svg' %}" class="img-thumbnail logo" alt="logo">
+            </a>
+        </li>
+        <li class="col-6 d-flex align-items-center h3">
+            DevNews
+            {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu ms-2" viewBox="0 0 16 16"></svg> {% endcomment %}
         </li>
     </ul>
+
+    {% comment %} navbar {% endcomment %}
     
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         {% comment %} <li class="nav-item">

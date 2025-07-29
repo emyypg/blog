@@ -167,3 +167,8 @@ a:hover {
     margin-top: 5px;
     text-align: left;
 }
+
+.logo {
+  width: 72px;
+  height: 72px;
+}
