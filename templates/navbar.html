@@ -24,11 +24,15 @@
 
     {% comment %} navbar {% endcomment %}
     
+    {% comment %} añadir enlace activo a los li class="nav-item active"
+     https://valerymelou.com/blog/2020-05-04-how-to-highlight-active-links-in-your-django-website/
+    {% endcomment %}
+
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         {% comment %} <li class="nav-item">
         <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li> {% endcomment %}
         <li><a href="{% url 'news:home' %}" class="nav-link px-2">Noticias</a></li> 
-        <li><a href="#" class="nav-link px-2">Nosotros</a></li>
+        <li><a href="{% url 'nosotros' %}" class="nav-link px-2">Nosotros</a></li>
         <li><a href="#" class="nav-link px-2">Contacto</a></li>
     </ul>
 
