@@ -2,70 +2,104 @@
 {% load static %}
 
 {% block titulo%} Post {%endblock titulo%}
+
 {% block content %}
 
+{# Option to edit the post for superusers/staff #}
 {% if user.is_superuser or user.is_staff %}
-    <div class="text-center my-3"> {# Añade un div contenedor y las clases de Bootstrap #}
+    <div class="text-center my-3">
         <a href="{% url 'news:editar_post' post.pk %}" class="btn btn-primary">Editar Post</a>
     </div>
     <hr>
 {% endif %}
 
 <div class="container">
-    <h1> {{post}} </h1>
-    <img src="{{post.imagen.url}}" alt="" width="300">
-    <p>{{post.titulo}}</p>
-    <p>{{post.fecha_publicacion}}</p>
-    <p>{{post.categorias}}</p>
-    <p>{{post.contenido}}</p>
-    <p>Autor: {{post.autor}}</p>
-    <br>
+    {# Post Title #}
+    <h1>{{ post.titulo }}</h1>
+
+    {# Post Image #}
+    {% if post.imagen_destacada %}
+        <img src="{{ post.imagen_destacada.url }}" alt="{{ post.titulo }}" class="img-fluid mb-3" style="max-width: 500px;">
+    {% endif %}
+    
+    {# Post Metadata #}
+    <p>Publicado el: {{ post.fecha_publicacion }}</p>
+    <p>Categorías: 
+        {% for categoria in post.categorias.all %}
+            {{ categoria.nombre }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+            Sin categoría
+        {% endfor %}
+    </p>
+
+    {# Post Content (using |safe if it contains HTML) #}
+    <div class="post-contenido">
+        {{ post.contenido|safe }}
+    </div>
+    
+    {# Post Author #}
+    <p class="mt-3">Autor: <strong>{{ post.autor.username }}</strong></p>
+    
     <hr>
 
+    {# Comment Section #}
     {% if user.is_authenticated %}
-    <h3>Comentá algo aquí</h3>
-    <form action="{% url 'news:comentar' %}" method="post">{% csrf_token %}
-
-        <textarea name="comentario" cols="30" rows="3"></textarea>
-        <input type="text" name="id_post" value="{{ post.pk }}" hidden="">
-        <input type="submit" value="comentar">
-    </form>
-
-
-    <br>
+        <h3>Comentá algo aquí</h3>
+        <form action="{% url 'news:comentar' %}" method="post" class="mb-5">
+            {% csrf_token %}
+            <textarea name="comentario" cols="30" rows="3" class="form-control" placeholder="Escribe tu comentario aquí..." required></textarea>
+            <input type="hidden" name="id_post" value="{{ post.pk }}">
+            <input type="submit" value="Comentar" class="btn btn-primary mt-2">
+        </form>
 
         <h3>Comentarios</h3>
-        {% for com in comentarios %}
-        <div class="contenedor">
-        <div class="row mb-2">
-        <div class="col-md-16">
-            <div class="row g-0 border rounded overflow-hidden flex-md-row mb-8 shadow-sm h-md-250 position-relative">
-                <div class="col p-4 d-flex flex-column position-static">
-                    <strong class="d-inline-block mb-2 text-primary-emphasis">{{ com.usuario }} 
-                    </strong>
-                    <h3 class="mb-0"><strong> comentario: {{ com.contenido }}</strong></h3>
-                    <div class="mb-1 text-body-secondary"> {{ com.fecha_creacion }}</div>
+        {% if comentarios %}
+            {% for com in comentarios %}
+                <div class="comment-item mb-3 p-3 border rounded shadow-sm bg-light">
+                    <div class="d-flex align-items-center mb-2">
+                        <strong class="text-primary-emphasis me-2">{{ com.autor.username }}</strong>
+                        <small class="text-body-secondary">{{ com.fecha_creacion }}</small>
+                    </div>
+                    
+                    <p class="mb-2"><strong>{{ com.contenido }}</strong></p>
+                    
+                    {% if com.es_respuesta %}
+                        <small class="text-muted d-block mb-2">Respuesta a un comentario anterior.</small>
+                    {% endif %}
+                    
+                    {# Edit and Delete Comment Buttons #}
+                    {% if com.autor == request.user or user.is_staff or user.is_superuser %}
+                        <div class="mt-2 d-flex">
+                            <a href="{% url 'news:editar_cometario' com.pk %}" class="btn btn-sm btn-outline-secondary me-2">Editar Comentario</a>
+                            <a href="{% url 'news:eliminar_comentario' com.pk %}" class="btn btn-sm btn-outline-danger">Eliminar Comentario</a>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+        {% endif %}
+    
+    <hr class="my-4">
 
-            <title>Placeholder</title>
-        {% endfor %}
-        </div>
-        </div>
-        </div>
-
-        
-    <hr>
-    <hr>
-
-
+    {# Option to delete the post for superusers/staff #}
     {% if user.is_superuser or user.is_staff %}
-        <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="{% url 'news:eliminar_post' post.pk %}"> eliminar post</a></button>
+        <div class="text-center">
+            <button type="button" class="btn btn-outline-danger me-2">
+                <a class="nav-link text-danger" href="{% url 'news:eliminar_post' post.pk %}">Eliminar Post</a>
+            </button>
+        </div>
     {% endif %}
     
     {% else %}
-        <h3>¿Quieres comentar, y ver las opiniones de los demás?</h3> 
-        <h2> LOGEATE </h2>
-        <button type="button" class="btn btn-primary"><a class="nav-link" href="{% url 'usuarios:login' %}?next={{ request.path }}"> iniciar
-        sesion</a></button>
+        {# Message for non-authenticated users #}
+        <div class="text-center my-5 p-4 border rounded bg-light">
+            <h3>¿Quieres comentar y ver las opiniones de los demás?</h3> 
+            <h2 class="mb-3">¡Inicia Sesión!</h2>
+            <button type="button" class="btn btn-primary btn-lg">
+                <a class="nav-link text-white" href="{% url 'usuarios:login' %}?next={{ request.path }}">Iniciar Sesión</a>
+            </button>
+        </div>
     {% endif %}
 </div>
-{% endblock %} 
+{% endblock %}

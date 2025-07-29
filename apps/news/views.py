@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from .models import Categoria, Post, Comentario # Asegúrate de importar tu modelo Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.views import View
 from django.urls import reverse_lazy
@@ -118,15 +119,22 @@ def agregar_post(request):
 
 @login_required
 def eliminar_post(request, pk):
-    post = Post.objects.get(pk =pk)
     post = get_object_or_404(Post, pk=pk)
-    contexto = {'posts': post}
+    # Verifica si el usuario tiene permiso para eliminar el post
+    if not (request.user.is_superuser or request.user.is_staff or request.user == post.autor):
+        # Si el usuario no tiene permiso, redirige a la página de inicio o a una página de acceso denegado
+        return redirect(reverse_lazy('news:home')) 
+    # Si el usuario tiene permiso, procede con la eliminación
+    # Si la solicitud es POST, significa que el usuario ha confirmado la eliminación
     if request.method == 'POST':
+        # Elimina el post de la base de datos
         post.delete()
-        return redirect('news:home')
-    return render(request, 'news/detalle_post.html', contexto)
-
- 
+        # Redirige a la página de inicio después de eliminar el post
+        return redirect(reverse_lazy('news:home'))
+    else:
+        # Si la solicitud es GET, muestra una página de confirmación de eliminación
+    # Renderiza una plantilla de confirmación de eliminación
+        return render(request, 'news/confirmar_eliminar_post.html', {'post': post})
 
 @login_required
 def editar_post(request, pk):
@@ -146,25 +154,95 @@ def editar_post(request, pk):
     return render(request, 'news/editar_post.html',{'form': form, 'post': post})
 
 @login_required
+@require_POST  # Asegura que esta vista solo maneje solicitudes POST
 def Comentar_Post(request):
-    comentario = request.POST.get('comentario', None)
-    user = request.user
-    post_a_comentar = request.POST.get('id_post', None)
-    post = Post.objects.get(pk=post_a_comentar)
-    coment = Comentario.objects.create(
-    usuario=user, post=post, texto=comentario)
-    return redirect(reverse_lazy('news:post_detail', kwargs={"pk": noti}))
+    comment_text = request.POST.get('comentario', None)
+    post_id = request.POST.get('id_post', None)
 
-class EditarComentario(View):
+    if not post_id or not comment_text:
+        # Handle missing data more gracefully, redirecting to the post if ID exists
+        if post_id:
+            post = get_object_or_404(Post, pk=post_id)
+            # Redirect using pk because your URL expects pk
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": post.pk}))
+        else:
+            return redirect(reverse_lazy('news:home'))
+
+    post = get_object_or_404(Post, pk=post_id)
+
+    coment = Comentario.objects.create(
+        autor=request.user,
+        post=post,
+        contenido=comment_text
+    )
+
+    comentario_padre_id = request.POST.get('comentario_padre_id')
+    if comentario_padre_id:
+        try:
+            parent_comment = Comentario.objects.get(pk=comentario_padre_id)
+            coment.comentario_padre = parent_comment
+            coment.save()
+        except Comentario.DoesNotExist:
+            pass
+    # Redirige al detalle del post después de comentar
+    return redirect(reverse_lazy('news:post_detail', kwargs={"pk": post.pk}))
+
+
+class EditarComentario(LoginRequiredMixin, View):
+    # LoginRequiredMixin se asegura que el usuario esté autenticado antes de acceder a esta vista
+    # si no está autenticado, lo redirige a la página de inicio de sesión
     def get(self, request, pk):
-        comment = Comentario.objects.get(pk=pk) # extraemos el objeto de comentarios con igual pk
+        comment = get_object_or_404(Comentario, pk=pk)
+        # Verifica si el usuario es el autor del comentario o un superusuario
+        # Si no es el autor, redirige a la página de detalle del post        
+        if not (comment.autor == request.user or request.user.is_staff or request.user.is_superuser):
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": comment.post.pk}))
+        # Si el usuario es el autor, muestra el formulario para editar el comentario
+        # Crea un formulario con los datos del comentario existente
+        form = CommentForm(instance=comment) 
         post = comment.post 
-        return render(request, 'news/editar_comentario.html', {'comment': comment, 'post': post})
+        return render(request, 'news/editar_comentario.html', {'form': form, 'comment': comment, 'post': post})
+    # Maneja la solicitud POST para actualizar el comentario
+    # Verifica si el usuario es el autor del comentario o un superusuario
+    def post(self, request, pk):
+        comment = get_object_or_404(Comentario, pk=pk) 
+        if not (comment.autor == request.user or request.user.is_staff or request.user.is_superuser):
+            # Si el usuario no es el autor del comentario, redirige a la página de detalle del post
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": comment.post.pk}))
+        # Si el usuario es el autor, procesa el formulario para editar el comentario
+        # Crea un formulario con los datos del comentario existente
+        form = CommentForm(request.POST, instance=comment) # vincula el formulario al comentario existente
+        # Verifica si el formulario es válido
+        # Si es válido, guarda los cambios y redirige al detalle del post    
+        if form.is_valid():
+            form.save() 
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": comment.post.pk}))
+        else:
+            # Si el formulario no es válido, renderiza de nuevo con el formulario y el comentario
+            post = comment.post # Obtiene el post asociado al comentario
+            return render(request, 'news/editar_comentario.html', {'form': form, 'comment': comment, 'post': post})
+        
+class CommentDeleteView(LoginRequiredMixin, View):
+    # LoginRequiredMixin se asegura que el usuario esté autenticado antes de acceder a esta vista
+    # si no está autenticado, lo redirige a la página de inicio de sesión    
+    def get(self, request, pk):
+        comment = get_object_or_404(Comentario, pk=pk)
+        post = comment.post
+        if comment.autor == request.user or request.user.is_staff or request.user.is_superuser:
+            return render(request, 'news/confirmar_eliminar_comentario.html', {
+                'comment': comment,
+                'post': post
+            })
+        else:
+            # si el usuario no es el autor del comentario, redirige a la página de detalle del post
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": post.pk}))
 
     def post(self, request, pk):
-        comment = Comentario.objects.get(pk=pk)
-        nuevo_contenido = request.POST.get('texto')
-        comment.texto = nuevo_contenido
-        comment.save()
-        post = comment.post      # buscamos de que noticia es el comentario para sarlo para redireccionarme a la misma despues de editarla
-        return redirect('news:post_detail', pk=post.pk)
+        comment = get_object_or_404(Comentario, pk=pk)
+        post = comment.post 
+        if comment.autor == request.user or request.user.is_staff or request.user.is_superuser:
+            comment.delete()
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": post.pk}))
+        else:
+            # si el usuario no es el autor del comentario, redirige a la página de detalle del post
+            return redirect(reverse_lazy('news:post_detail', kwargs={"pk": post.pk}))
