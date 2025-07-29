@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Nosotros {% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <h1 class="text-center my-4">¿Quiénes Somos?</h1>
+    <p class="text-center">Bienvenidos a nuestro blog de noticias de programación, un espacio creado por el Grupo 11 del Informatorio. Somos un equipo de cinco apasionados por la tecnología y el desarrollo web, comprometidos en compartir información relevante y actualizada sobre el mundo de la programación. Nuestro objetivo es proporcionar un recurso valioso para estudiantes, profesionales y entusiastas que buscan mantenerse al día con las últimas tendencias y noticias en el ámbito de la programación..</p>
+    
+    <h2 class="mt-5">Nuestro Proyecto</h2>
+    <p class="text-center">Este blog es el resultado de un proyecto final desarrollado en el marco de nuestra capacitación en Django, donde aplicamos los conceptos aprendidos a lo largo del curso. La aplicación web fue diseñada para cumplir con los requisitos establecidos por nuestros profesores, y se centra en la promoción de noticias y artículos relacionados con la programación.</p>
+
+    <h3 class="mt-5">Funcionalidades clave</h3>
+    <p class="text-center">Este blog es el resultado de un proyecto final desarrollado en el marco de nuestra capacitación en Django, donde aplicamos los conceptos aprendidos a lo largo del curso. La aplicación web fue diseñada para cumplir con los requisitos establecidos por nuestros profesores, y se centra en la promoción de noticias y artículos relacionados con la programación.</p>
+    <ul>
+        <li>Acceso a Diversos Perfiles: Los usuarios pueden registrarse y acceder a diferentes funcionalidades según su perfil (admin, registrado, etc.). </li>
+        <li>Gestión de Publicaciones: Los administradores pueden cargar y eliminar publicaciones, asegurando que el contenido sea relevante y de calidad. </li>
+        <li>Interacción de Usuarios: Los usuarios registrados pueden comentar en las publicaciones, fomentando un espacio de discusión y aprendizaje. </li>
+        <li>Filtrado de Contenido: Los visitantes pueden filtrar las publicaciones por fecha, categoría y comentarios, facilitando la navegación y búsqueda de información. </li>
+    </ul>
+
+    <h2 class="mt-5">Nuestro Equipo</h2>
+    <p class="text-center">Conoce a los miembros de nuestro equipo:</p>
+    <ul>
+    {% for i in integrantes %}
+        <li>
+            {{ i.nombre }} - <a href="{{ i.portfolio }}">Visita su portfolio</a> - 
+            <a href="{{ i.github }}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
+                    <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8"/>
+                </svg> 
+            </a>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <p class="text-center">Estamos emocionados de compartir nuestro trabajo con ustedes y esperamos que encuentren nuestro blog útil e inspirador. Agradecemos su apoyo y los invitamos a unirse a nuestra comunidad de aprendizaje. ¡No duden en contactarnos si tienen preguntas o sugerencias!</p>
+</div>
+
+{% endblock content %}
