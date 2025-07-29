@@ -8,17 +8,17 @@
         </a>
     </div>
     <ul class="nav col-0 col-md-auto mb-2 justify-content-left mb-md-0">
-        <li class="nav-item">   
+        {% comment %} <li class="nav-item">   {% endcomment %} 
         <li id="icono-izquierda">
             <h3>DevNews
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu" viewBox="0 0 16 16">
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu" viewBox="0 0 16 16"></svg>
+            </h3>
         </li>
     </ul>
     
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li class="nav-item">
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+        {% comment %} <li class="nav-item">
+        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li> {% endcomment %}
         <li><a href="{% url 'news:home' %}" class="nav-link px-2">Noticias</a></li> 
         <li><a href="#" class="nav-link px-2">Nosotros</a></li>
         <li><a href="#" class="nav-link px-2">Contacto</a></li>
@@ -32,10 +32,17 @@
                 <button type="submit" class="btn btn-primary">Cerrar sesión</button>
             </form>
         {% else %}
-            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="{% url 'usuarios:login' %}"> iniciar
-                sesion</a></button>
-            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link"
-                href="{% url 'usuarios:registro' %}">Registrar</a></button>
+            <button type="button" class="btn btn-outline-primary me-2">
+                <a class="nav-link" href="{% url 'usuarios:login' %}"> 
+                iniciar sesión
+                </a>
+            </button>
+            <button type="button" class="btn btn-outline-primary me-2">
+                <a class="nav-link"
+                href="{% url 'usuarios:registro' %}">
+                Registrarse
+                </a>
+            </button>
         {% endif %}
     </div>
 </header>
