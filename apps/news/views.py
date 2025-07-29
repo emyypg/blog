@@ -166,7 +166,7 @@ def Comentar_Post(request):
         contenido=comentario_texto # Cambiado de 'texto' a 'contenido' (según tu modelo Comentario)
     )
     # 'noti' no está definido. Debe ser 'post.pk'
-    return redirect(reverse_lazy('news:detalle_post.html', kwargs={"pk": post.pk}))
+    return redirect(reverse_lazy('news:detalle_post', kwargs={"pk": post.pk}))
 
 class EditarComentario(View):
     def get(self, request, pk):
