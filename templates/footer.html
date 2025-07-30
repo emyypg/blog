@@ -1,68 +1,19 @@
-{% comment %} <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-  <p class="col-md-4 mb-0 text-body-secondary">© 2025 Company, Inc</p><a href="/" class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" aria-label="Bootstrap"><svg class="bi me-2" width="40" height="32" aria-hidden="true">
-  <use xlink:href="#bootstrap"></use></svg></a>
-  <ul class="nav col-md-4 justify-content-end">
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-body-secondary">Home</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-body-secondary">Features</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-body-secondary">Pricing</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-body-secondary">FAQs</a>
-    </li>
-    <li class="nav-item">
-      <a href="#" class="nav-link px-2 text-body-secondary">About</a>
-    </li>
-  </ul>
-</footer> {% endcomment %}
-
-
-{% comment %} <div class="b-example-divider"></div>
-<div class="container">
-  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
-    <div class="col-md-4 d-flex align-items-center">
-      <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1" aria-label="Bootstrap"><svg class="bi" width="30" height="24" aria-hidden="true">
-      <use xlink:href="#bootstrap"></use></svg></a> <span class="mb-3 mb-md-0 text-body-secondary">© 2025 Company, Inc</span>
-    </div>
-    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
-      <li class="ms-3">
-        <a class="text-body-secondary" href="#" aria-label="Instagram"><svg class="bi" width="24" height="24" aria-hidden="true">
-        <use xlink:href="#instagram"></use></svg></a>
-      </li>
-      <li class="ms-3">
-        <a class="text-body-secondary" href="#" aria-label="Facebook"><svg class="bi" width="24" height="24">
-        <use xlink:href="#facebook"></use></svg></a>
-      </li>
-    </ul>
-  </footer>
-</div> {% endcomment %}
-
-<div class="b-example-divider"></div>
+<div class="border-top my-3"></div>
 
 <div class="container">
-  <footer class="py-3 my-4">
+  <footer class="">
+    {% with request.resolver_match.url_name as url_name %}
     <ul class="nav justify-content-center border-bottom pb-3 mb-3">
       <li class="nav-item">
-        <a href="{% url 'news:home' %}" class="nav-link px-2 text-body-secondary">Noticias</a>
+        <a href="{% url 'news:home' %}" class="nav-link px-2 text-body-secondary {% if url_name == 'news:home' %}active{% endif %}">Noticias</a>
       </li>
       <li class="nav-item">
-        <a href="{% url 'nosotros' %}" class="nav-link px-2 text-body-secondary">Nosotros</a>
+        <a href="{% url 'nosotros' %}" class="nav-link px-2 text-body-secondary {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
       </li>
-      {% comment %} <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-body-secondary">Pricing</a>
-      </li> {% endcomment %}
-      {% comment %} <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-body-secondary">FAQs</a>
-      </li>
-      <li class="nav-item">
-        <a href="#" class="nav-link px-2 text-body-secondary">About</a>
-      </li> {% endcomment %}
     </ul>
+    {% endwith %}
     <p class="text-center text-body-secondary">Grupo 11 del Informatorio 2025</p>
+    <p class="text-center text-body-secondary"><a href="https://github.com/emyypg/blog" target="_blank" rel="noopener noreferrer">Enlace al proyecto</a></p>
   </footer>
 </div>
 

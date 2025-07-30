@@ -172,3 +172,9 @@ a:hover {
   width: 72px;
   height: 72px;
 }
+
+.active {
+  color: #007bff;
+  font-weight: bold;
+  text-decoration: underline;
+}

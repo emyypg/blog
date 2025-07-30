@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="es" data-bs-theme="dark"> {% comment %} modo oscuro: data-bs-theme="dark" {% endcomment %}
+<html lang="es" data-bs-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,17 +13,18 @@
   <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 </head>
 <body>
-  <div>
-    {% include "navbar.html" %}
-  </div>
+  
+  {% comment %} navbar {% endcomment %}
+  {% include "navbar.html" %}
 
-  <div class="main-content-wrapper"> {# ¡Nuevo contenedor! #}
-    <main> {# <main> sigue siendo el contenedor semántico para tu block content #}
+  {% comment %} contenedor principal {% endcomment %}
+  <div class="main-content-wrapper">
+    <main>
       {% block content %}
 
       {% endblock content %}
     </main>
-  </div> {# Cierre del nuevo contenedor principal #}
+  </div>
 
   {% comment %} footer {% endcomment %}
   {% include "footer.html" %}

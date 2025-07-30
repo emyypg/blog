@@ -63,24 +63,53 @@
 
 <div class="container">
     {% for post in posts %}
-    <div class="row mb-4 align-items-center"> {# Añadimos align-items-center para centrado vertical #}
-        <div class="col-md-8"> {# Contenido a la izquierda, ocupando 8 de 12 columnas en pantallas medianas y grandes #}
-            <h6 class="autor">{{ post.autor }}</h6>
-            <h5 class="titulo">{{ post.titulo }}</h5>
-            <p class="descripcion">{{ post.contenido | truncatechars:150 }}</p>
-            <p class="fecha">{{ post.fecha_publicacion|date:"d M Y" }}</p>
+    <div class="row mb-4 align-items-center card"> {# Añadimos align-items-center para centrado vertical #}
+        <div class="col-md-8 card-body text-center"> {# Contenido a la izquierda, ocupando 8 de 12 columnas en pantallas medianas y grandes #}
+            
+            <h3 class="titulo card-title">{{ post.titulo }}</h3>
+
+{% comment %}             <div>
+                <div class="col-md-4 d-flex justify-content-center"> {# Imagen a la derecha, ocupando 4 de 12 columnas #}
+                    {# ¡IMPORTANTE! Asegúrate de usar 'imagen_destacada.url' #}
+                    {% if post.imagen_destacada %}
+                        <img src="{{ post.imagen_destacada.url }}" class="img-fluid rounded" alt="{{ post.titulo }}"> {# img-fluid para responsividad, rounded para bordes #}
+                    {% else %}
+                        {# Placeholder si no hay imagen #}
+                        <img src="https://placehold.co/400x300/e0e0e0/555555?text=Sin+Imagen" class="img-fluid rounded" alt="Sin imagen"> {# img-fluid para responsividad, rounded para bordes #}
+                    {% endif %}
+                </div>
+
+                <div class="col-md-8"> 
+                    <p class="descripcion card-text">{{ post.contenido | truncatechars:150 }}</p>
+                </div>
+            </div> {% endcomment %}
+
+            <div class="row mb-4 align-items-center"> <!-- Contenedor de fila para las columnas -->
+                <div class="col-md-4 d-flex justify-content-center"> <!-- Imagen a la izquierda, ocupando 4 de 12 columnas -->
+                    {% if post.imagen_destacada %}
+                        <img src="{{ post.imagen_destacada.url }}" class="img-fluid rounded" alt="{{ post.titulo }}"> <!-- img-fluid para responsividad, rounded para bordes -->
+                    {% else %}
+                        <img src="https://placehold.co/400x300/e0e0e0/555555?text=Sin+Imagen" class="img-fluid rounded" alt="Sin imagen"> <!-- Placeholder si no hay imagen -->
+                    {% endif %}
+                </div>
+
+                <div class="col-md-8"> <!-- Descripción a la derecha, ocupando 8 de 12 columnas -->
+                    <p class="descripcion card-text">{{ post.contenido | truncatechars:150 }}</p>
+                </div>
+            </div>
+
+
+            
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="autor">Autor: {{ post.autor }}</h6>
+                <p class="fecha">Fecha: {{ post.fecha_publicacion|date:"d M Y" }}</p>
+            </div>
             <a href="{% url 'news:post_detail' post.pk %}" class="leer-mas d-block text-start">Seguir leyendo...</a> {# d-block para que ocupe su propia línea, text-start para alinear a la izquierda #}
         </div>
-        <div class="col-md-4"> {# Imagen a la derecha, ocupando 4 de 12 columnas #}
-            {# ¡IMPORTANTE! Asegúrate de usar 'imagen_destacada.url' #}
-            {% if post.imagen_destacada %}
-                <img src="{{ post.imagen_destacada.url }}" class="img-fluid rounded" alt="{{ post.titulo }}"> {# img-fluid para responsividad, rounded para bordes #}
-            {% else %}
-                {# Placeholder si no hay imagen #}
-                <img src="https://placehold.co/400x300/e0e0e0/555555?text=Sin+Imagen" class="img-fluid rounded" alt="Sin imagen"> {# img-fluid para responsividad, rounded para bordes #}
-            {% endif %}
-        </div>
+
     </div>
+
+
     <hr>
     {% endfor %}
 </div>
