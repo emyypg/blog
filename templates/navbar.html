@@ -36,10 +36,10 @@
         <li><a href="#" class="nav-link px-2">Contacto</a></li>
     </ul>
 
-    <div class="col-md-3 text-end">
+    <div class="col-md-3 col-6 d-flex justify-content-center align-items-center">
         {% if user.is_authenticated %}
-            <p class="centered">Bienvenido {{ user.username }} </p>
-            <form action="{% url 'usuarios:logout' %}" method="post" style="display: inline;">
+            <p class="bienvenido text-center centered flex-fill me-2 d-flex align-items-center">Bienvenido {{ user.username }} </p>
+            <form action="{% url 'usuarios:logout' %}" method="post" style="" class="p-0 m-0">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">Cerrar sesión</button>
             </form>
