@@ -1,15 +1,5 @@
 {% load static %}
-<header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-    <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
-                <use xlink:href="#bootstrap"></use>
-            </svg>
-        </a>
-    </div>
-
-    {% comment %} logo {% endcomment %}
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom container">
     <ul class="d-flex align-items-center nav col-0 col-md-auto mb-2 justify-content-left mb-md-0">
         <li class="col-6 logo">
             <a href="{% url 'news:home' %}">
@@ -22,19 +12,21 @@
         </li>
     </ul>
 
-    {% comment %} navbar {% endcomment %}
-    
-    {% comment %} añadir enlace activo a los li class="nav-item active"
-     https://valerymelou.com/blog/2020-05-04-how-to-highlight-active-links-in-your-django-website/
-    {% endcomment %}
-
+    {% with request.resolver_match.url_name as url_name %}
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
         {% comment %} <li class="nav-item">
         <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li> {% endcomment %}
-        <li><a href="{% url 'news:home' %}" class="nav-link px-2">Noticias</a></li> 
-        <li><a href="{% url 'nosotros' %}" class="nav-link px-2">Nosotros</a></li>
-        <li><a href="#" class="nav-link px-2">Contacto</a></li>
+        <li class="nav-item">
+            <a href="{% url 'news:home' %}" class="nav-link px-2 {% if url_name == 'news:home' %}active{% endif %}">Noticias</a>
+        </li> 
+        <li class="nav-item">
+            <a href="{% url 'nosotros' %}" class="nav-link px-2 {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link px-2">Contacto</a>
+        </li>
     </ul>
+    {% endwith %}
 
     <div class="col-md-3 col-6 d-flex justify-content-center align-items-center">
         {% if user.is_authenticated %}
@@ -44,12 +36,12 @@
                 <button type="submit" class="btn btn-primary">Cerrar sesión</button>
             </form>
         {% else %}
-            <button type="button" class="btn btn-outline-primary me-2">
+            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill">
                 <a class="nav-link" href="{% url 'usuarios:login' %}"> 
                 iniciar sesión
                 </a>
             </button>
-            <button type="button" class="btn btn-outline-primary me-2">
+            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill">
                 <a class="nav-link"
                 href="{% url 'usuarios:registro' %}">
                 Registrarse
