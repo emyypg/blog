@@ -13,7 +13,7 @@
     <hr>
 {% endif %}
 
-<div class="container">
+{% comment %} <div class="container">
     {# Post Title #}
     <h1>{{ post.titulo }}</h1>
 
@@ -40,7 +40,41 @@
     {# Post Author #}
     <p class="mt-3">Autor: <strong>{{ post.autor.username }}</strong></p>
     
-    <hr>
+    <hr> {% endcomment %}
+
+    <div class="container mt-5">
+        {# Post Title #}
+        <h1 class="display-4 text-center mb-4">{{ post.titulo }}</h1>
+
+        {# Post Image #}
+        {% if post.imagen_destacada %}
+            <div class="text-center mb-4">
+                <img src="{{ post.imagen_destacada.url }}" alt="{{ post.titulo }}" class="img-fluid" style="max-width: 100%; height: auto;">
+            </div>
+        {% endif %}
+        
+        {# Post Metadata #}
+        <div class="text-muted mb-3">
+            <p>Publicado el: <strong>{{ post.fecha_publicacion }}</strong></p>
+            <p>Categorías: 
+                {% for categoria in post.categorias.all %}
+                    <span class="badge bg-secondary">{{ categoria.nombre }}</span>{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    <span class="badge bg-light text-dark">Sin categoría</span>
+                {% endfor %}
+            </p>
+        </div>
+
+        {# Post Content (using |safe if it contains HTML) #}
+        <div class="post-contenido mb-4">
+            {{ post.contenido|safe }}
+        </div>
+        
+        {# Post Author #}
+        <p class="mt-3">Autor: <strong>{{ post.autor.username }}</strong></p>
+        
+        <hr>
+    </div>
 
     {# Comment Section #}
     {% if user.is_authenticated %}
