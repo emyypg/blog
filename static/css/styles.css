@@ -183,3 +183,14 @@ a:hover {
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
+
+/* editar post */
+
+#id_titulo, 
+#id_contenido, 
+#id_fecha_publicacion, 
+#id_imagen_destacada, 
+#id_categorias, 
+#id_estado {
+  width: 100%;
+}
