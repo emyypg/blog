@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block titulo %}Editar Comentario{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card p-4 shadow-sm">
+        <h2 class="card-title text-center mb-4">Editar Comentario</h2>
+        <p class="text-center text-muted">Editando comentario para el post: <strong>"{{ post.titulo }}"</strong></p>
+
+        <form method="post" action="{% url 'news:editar_cometario' comment.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }} {# Renders form fields as paragraphs. You can style this with Bootstrap as needed #}
+            {# Or manually: {{ form.contenido.label_tag }} {{ form.contenido }} {{ form.contenido.errors }} #}
+
+            <div class="d-flex justify-content-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg me-3">Guardar Cambios</button>
+                <a href="{% url 'news:post_detail' pk=post.pk %}" class="btn btn-secondary btn-lg">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
