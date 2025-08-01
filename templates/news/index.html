@@ -5,7 +5,27 @@
 {% block title %} Posts {% endblock %}
 
 {% block content %}
-{% block  barra_busqueda %}
+
+{# Carrusel dinámico de imágenes destacadas de los posts #}
+<div id="carouselPostImages" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        {% for post in posts %}
+            {% if post.imagen_destacada %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ post.imagen_destacada.url }}" class="d-block w-100" alt="{{ post.titulo }}">
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPostImages" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselPostImages" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+{% block barra_busqueda %}
     <div class="container">
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
@@ -32,7 +52,6 @@
             {% for c in categorias %}
                 <li class="list-inline-item">
                     {# Use url_with_new_params to set 'id' and preserve others #}
-                    {# If you want to clear 'buscar', 'fecha', 'orden' when selecting a category, add them to the tag with value='' or None #}
                     <a href="{% url 'news:home' %}?{% url_with_new_params id_categoria=c.pk %}">
                         {{ c.nombre }}
                     </a>
@@ -68,22 +87,6 @@
             
             <h3 class="titulo card-title">{{ post.titulo }}</h3>
 
-{% comment %}             <div>
-                <div class="col-md-4 d-flex justify-content-center"> {# Imagen a la derecha, ocupando 4 de 12 columnas #}
-                    {# ¡IMPORTANTE! Asegúrate de usar 'imagen_destacada.url' #}
-                    {% if post.imagen_destacada %}
-                        <img src="{{ post.imagen_destacada.url }}" class="img-fluid rounded" alt="{{ post.titulo }}"> {# img-fluid para responsividad, rounded para bordes #}
-                    {% else %}
-                        {# Placeholder si no hay imagen #}
-                        <img src="https://placehold.co/400x300/e0e0e0/555555?text=Sin+Imagen" class="img-fluid rounded" alt="Sin imagen"> {# img-fluid para responsividad, rounded para bordes #}
-                    {% endif %}
-                </div>
-
-                <div class="col-md-8"> 
-                    <p class="descripcion card-text">{{ post.contenido | truncatechars:150 }}</p>
-                </div>
-            </div> {% endcomment %}
-
             <div class="row mb-4 align-items-center"> <!-- Contenedor de fila para las columnas -->
                 <div class="col-md-4 d-flex justify-content-center"> <!-- Imagen a la izquierda, ocupando 4 de 12 columnas -->
                     {% if post.imagen_destacada %}
@@ -98,19 +101,15 @@
                 </div>
             </div>
 
-
-            
             <div class="d-flex justify-content-between align-items-center">
                 <h6 class="autor">Autor: {{ post.autor }}</h6>
                 <p class="fecha">Fecha: {{ post.fecha_publicacion|date:"d M Y" }}</p>
             </div>
             <a href="{% url 'news:post_detail' post.pk %}" class="leer-mas d-block text-start">Seguir leyendo...</a> {# d-block para que ocupe su propia línea, text-start para alinear a la izquierda #}
         </div>
-
     </div>
-
-
     <hr>
     {% endfor %}
 </div>
+
 {% endblock content %}
