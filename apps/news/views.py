@@ -36,12 +36,13 @@ def index(request):
     # Pasamos el conjunto de consultas ya filtrado (por búsqueda/categoría) a 'filtrar_posts'
     # para ordenarlo según 'fecha_parametro' u 'orden_parametro'.
     final_posts_queryset = filtrar_posts(base_posts_queryset, fecha_parametro, orden_parametro)
-
-    # Ahora pasamos el queryset filtrado y ordenado al contexto
-    contexto['posts'] = final_posts_queryset
-    contexto['categorias'] = Categoria.objects.all()  # Obtenemos todas las categorías
-
-    return render(request, 'news/index.html', contexto)  # Pasamos los posts al contexto de la plantilla
+    categorias = Categoria.objects.all()
+    destacadas = Post.objects.all().order_by('-fecha_publicacion')[:3]
+    return render(request, 'news/index.html', {
+        'posts': final_posts_queryset,
+        'categorias': categorias,
+        'destacadas': destacadas,
+    })
 
 def filtrar_posts(posts_queryset, fecha_parametro, orden_parametro):
     # Esta función SOLO debe modificar el 'posts_queryset' que se le pasa.

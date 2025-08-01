@@ -194,3 +194,8 @@ a:hover {
 #id_estado {
   width: 100%;
 }
+
+.carousel-item img {
+    height: 300px;
+    object-fit: cover;
+}
