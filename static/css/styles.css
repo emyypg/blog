@@ -216,3 +216,9 @@ a:hover {
     padding: 15px;
     transition: background-color 0.3s ease-in-out;
 }
+
+/* comentarios */
+.card-cuerpo {
+  border: 1px solid #9a9a9a;
+  border-radius: 15px;
+}

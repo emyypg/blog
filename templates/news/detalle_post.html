@@ -78,7 +78,7 @@
 
     {# Comment Section #}
     {% if user.is_authenticated %}
-        <h3>Comentá algo aquí</h3>
+        <h3 class="text-center">Comentá algo aquí</h3>
         <form action="{% url 'news:comentar' %}" method="post" class="mb-5">
             {% csrf_token %}
             <textarea name="comentario" cols="30" rows="3" class="form-control" placeholder="Escribe tu comentario aquí..." required></textarea>
@@ -89,13 +89,16 @@
         <h3>Comentarios</h3>
         {% if comentarios %}
             {% for com in comentarios %}
-                <div class="comment-item mb-3 p-3 border rounded shadow-sm bg-light">
-                    <div class="d-flex align-items-center mb-2">
+                <div class="comment-item mb-3 p-3 border rounded shadow-sm card">
+                    <div class="card-header d-flex align-items-center mb-2 ">
                         <strong class="text-primary-emphasis me-2">{{ com.autor.username }}</strong>
                         <small class="text-body-secondary">{{ com.fecha_creacion }}</small>
                     </div>
                     
-                    <p class="mb-2"><strong>{{ com.contenido }}</strong></p>
+                    <div class="card-body card-cuerpo text-end">
+                        <p class="mb-2"><strong>{{ com.contenido }}</strong></p>
+                    </div>
+
                     
                     {% if com.es_respuesta %}
                         <small class="text-muted d-block mb-2">Respuesta a un comentario anterior.</small>
