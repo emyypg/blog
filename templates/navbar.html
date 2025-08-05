@@ -22,9 +22,9 @@
         <li class="nav-item">
             <a href="{% url 'nosotros' %}" class="nav-link px-2 {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
         </li>
-        <li class="nav-item">
+        {% comment %} <li class="nav-item">
             <a href="#" class="nav-link px-2">Contacto</a>
-        </li>
+        </li> {% endcomment %}
     </ul>
     {% endwith %}
 
