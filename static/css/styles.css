@@ -68,16 +68,16 @@
 */
 
 /* ESTILOS PARA EL BODY Y EL NUEVO CONTENEDOR PRINCIPAL */
-body {
-    font-family: Arial, sans-serif;
+/* body {
+    font-family: Arial, sans-serif; */
     /* background-color: #f4f4f4; */
-    display: flex; /* Hacemos el body un flex container */
-    flex-direction: column; /* Apilamos los hijos (navbar, main-content-wrapper) verticalmente */
-    min-height: 100vh;
+    /* display: flex; */ /* Hacemos el body un flex container */
+    /* flex-direction: column; */ /* Apilamos los hijos (navbar, main-content-wrapper) verticalmente */
+    /* min-height: 100vh;
     margin: 0;
-    padding: 0; /* Quitamos el padding del body para que el navbar ocupe todo el ancho si lo desea */
-    box-sizing: border-box;
-}
+    padding: 0; */ /* Quitamos el padding del body para que el navbar ocupe todo el ancho si lo desea */
+/*     box-sizing: border-box;
+} */
 
 .main-content-wrapper {
     /* Aquí centramos el contenido del formulario */
@@ -185,7 +185,7 @@ a:hover {
     margin-bottom: 0.5rem;
 }
 
-/* editar post */
+/* Editar post */
 
 #id_titulo, 
 #id_contenido, 
@@ -195,6 +195,8 @@ a:hover {
 #id_estado {
   width: 100%;
 }
+
+/* Estilos para el carrusel en index.html */
 
 .carousel-item img {
     height: 300px;
