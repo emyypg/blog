@@ -1,8 +1,8 @@
 from django.shortcuts import render
 import random # ordenar aleatoriamente a los integrantes del equipo
 
-def home(request):
-    return render(request, "home.html")
+""" def home(request):
+    return render(request, "home.html") """
 
 def nosotros(request):
     # ordenar aleatoriamente a los integrantes del equipo
