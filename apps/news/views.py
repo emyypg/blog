@@ -144,7 +144,8 @@ def editar_post(request, pk):
     # si se aprieta el boton de guardar cambios manda la info a travez de POST 
     if request.method == 'POST':
         # inicializamos el formulario con el parametro instance, que es un parametro que se necesita para actualizar una instancia de la BD
-        form = PostForm(request.POST, instance=post)
+        form = PostForm(request.POST, request.FILES, instance=post)
+
         if form.is_valid():
             form.save()
             return redirect('news:post_detail', pk=post.pk) 
@@ -247,3 +248,20 @@ class CommentDeleteView(LoginRequiredMixin, View):
         else:
             # si el usuario no es el autor del comentario, redirige a la página de detalle del post
             return redirect(reverse_lazy('news:post_detail', kwargs={"pk": post.pk}))
+@login_required
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.user in post.likes.all():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+    return redirect('news:post_detail', pk=post.id)
+# Vista para dar o quitar like a un comentario
+@login_required
+def like_comentario(request, pk):
+    comentario = get_object_or_404(Comentario, pk=pk)
+    if request.user in comentario.me_gusta.all():
+        comentario.me_gusta.remove(request.user)
+    else:
+        comentario.me_gusta.add(request.user)
+    return redirect('news:post_detail', pk=comentario.post.pk)
