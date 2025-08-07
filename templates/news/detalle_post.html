@@ -109,8 +109,8 @@
                     {# Editar/Eliminar comentario si corresponde #}
                     {% if com.autor == request.user or user.is_staff or user.is_superuser %}
                         <div class="mt-2">
-                            <button href="{% url 'news:editar_cometario' com.pk %}" class="btn btn-outline-secondary me-2">Editar</butt>
-                            <button href="{% url 'news:eliminar_comentario' com.pk %}" class="btn btn-outline-danger">Eliminar</button>
+                            <a href="{% url 'news:editar_cometario' com.pk %}" class="btn btn-outline-secondary me-2">Editar</a>
+                            <a href="{% url 'news:eliminar_comentario' com.pk %}" class="btn btn-outline-danger">Eliminar</a>
                         </div>
                     {% endif %}
                 </div>
@@ -119,10 +119,10 @@
             <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
         {% endif %}
     {% else %}
-        <div class="text-center my-5 p-4 border rounded bg-light">
+        <div class="text-center my-5 p-4 border rounded">
             <h3>¿Quieres comentar y ver las opiniones de los demás?</h3>
             <h2 class="mb-3">¡Inicia Sesión!</h2>
-            <a class="btn btn-primary btn-lg" href="{% url 'usuarios:login' %}?next={{ request.path }}">Iniciar Sesión</a>
+            <a class="btn btn-primary" href="{% url 'usuarios:login' %}?next={{ request.path }}">Iniciar Sesión</a>
         </div>
     {% endif %}
 
