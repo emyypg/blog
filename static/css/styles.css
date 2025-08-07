@@ -33,8 +33,15 @@
   border-radius: 5px;
   font-size: 0.95rem;
   font-weight: bold;
-  height: 60px;
+  
 } */
+
+.btn-sesion {
+  height: 70px;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border-radius: 5px;
+}
 
 .btn.login {
   background-color: #007bff;
@@ -172,6 +179,7 @@ a:hover {
 .logo {
   width: 72px;
   height: 72px;
+  border-radius: 50%;
 }
 
 .active {
