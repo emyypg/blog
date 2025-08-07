@@ -2,6 +2,8 @@ from django.db import models
 from django.conf import settings
 from django.utils.text import slugify
 from django.utils import timezone
+from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Categoria(models.Model):
@@ -36,6 +38,7 @@ class Post(models.Model):
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default='borrador')
     fecha_creacion = models.DateTimeField(auto_now_add=True)
     fecha_publicacion = models.DateTimeField(blank=True, null=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='likes', blank=True)  # <--- CORREGIDO
 
     class Meta:
         ordering = ['-fecha_publicacion', '-fecha_creacion']
@@ -68,6 +71,13 @@ class Comentario(models.Model):
         related_name='respuestas'
     )
 
+    # ✅ Campo agregado para me gusta en comentarios
+    me_gusta = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='comentarios_me_gusta',
+        blank=True
+    )
+
     class Meta:
         ordering = ['fecha_creacion']
 
@@ -76,3 +86,7 @@ class Comentario(models.Model):
 
     def es_respuesta(self):
         return self.comentario_padre is not None
+
+    # ✅ Método útil para contar me gusta
+    def cantidad_likes(self):
+        return self.me_gusta.count()
