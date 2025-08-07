@@ -27,14 +27,14 @@
   gap: 0.7rem;
 }
 
-.btn {
+/* .btn {
   text-decoration: none;
   padding: 0.4rem 0.9rem;
   border-radius: 5px;
   font-size: 0.95rem;
   font-weight: bold;
   height: 60px;
-}
+} */
 
 .btn.login {
   background-color: #007bff;
