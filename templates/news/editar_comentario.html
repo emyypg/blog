@@ -8,7 +8,7 @@
         <h2 class="card-title text-center mb-4">Editar Comentario</h2>
         <p class="text-center text-muted">Editando comentario para el post: <strong>"{{ post.titulo }}"</strong></p>
 
-        <form method="post" action="{% url 'news:editar_cometario' comment.pk %}">
+        <form method="post" action="{% url 'news:editar_comentario' comment.pk %}">
             {% csrf_token %}
             {{ form.as_p }} {# Renders form fields as paragraphs. You can style this with Bootstrap as needed #}
             {# Or manually: {{ form.contenido.label_tag }} {{ form.contenido }} {{ form.contenido.errors }} #}
