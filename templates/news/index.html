@@ -1,20 +1,119 @@
 {% extends 'base.html' %}
+{% load static %}
+{% load posts_filters %}
+
+{% block title %} Posts {% endblock %}
 
 {% block content %}
+
+{# Carrusel dinámico de imágenes destacadas de los posts #}
+<div id="carouselPostImages" class="carousel slide mb-5" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        {% for post in posts %}
+            {% if post.imagen_destacada %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                <img src="{{ post.imagen_destacada.url }}" class="d-block w-100" alt="{{ post.titulo }}">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="carouser__titulo">{{ post.titulo }}</h5>
+                    {% comment %} <p>Some representative placeholder content for the first slide.</p> {% endcomment %}
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselPostImages" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselPostImages" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+    </button>
+</div>
+
+{% block barra_busqueda %}
+    <div class="container">
+        <div class="row height d-flex justify-content-center align-items-center">
+            <div class="col-md-6">
+                <form method="get">
+                    <div class="form">
+                        <i class="fa fa-search"></i>
+                        <input type="text" class="form-control form-input" placeholder="Buscar..." name="buscar" value="{{ request.GET.buscar|default:'' }}">
+                        <span class="left-pan"></i></span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock barra_busqueda %}
+
+<aside>
+    <div class="p-4">
+        <h3 class="fst-italic text-center">Categorias</h3>
+        <ul class="list-inline mb-0 d-flex justify-content-center">
+            <li class="list-inline-item">
+                {# "Todas" link: should clear ALL filters #}
+                <a href="{% url 'news:home' %}">Todas</a>
+            </li>
+            {% for c in categorias %}
+                <li class="list-inline-item">
+                    {# Use url_with_new_params to set 'id' and preserve others #}
+                    <a href="{% url 'news:home' %}?{% url_with_new_params id_categoria=c.pk %}">
+                        {{ c.nombre }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</aside>
+
+{% if user.is_superuser or user.is_staff %}
+    <hr>
+    <div style="text-align: center;">
+        <button type="button" class="btn btn-primary ">
+            <a class="nav-link" href="{% url 'news:agregar_post' %}"> Agregar Post</a>
+        </button>
+    </div>
+{% endif %}
+
+<hr>
+<div class="text-center">
+    {# ORDERING LINKS: Use url_with_new_params to set sort order and preserve other parameters #}
+    <a href="{% url 'news:home' %}?{% url_with_new_params fecha_publicacion='asc' %}" class="btn btn-outline-secondary btn-sm m-1">Más antiguas</a>
+    <a href="{% url 'news:home' %}?{% url_with_new_params fecha_publicacion='des' %}" class="btn btn-outline-secondary btn-sm m-1">Más actuales</a>
+    <a href="{% url 'news:home' %}?{% url_with_new_params orden='asc' %}" class="btn btn-outline-secondary btn-sm m-1">De A a Z</a>
+    <a href="{% url 'news:home' %}?{% url_with_new_params orden='des' %}" class="btn btn-outline-secondary btn-sm m-1">De Z a A</a>
+</div>
+<hr>
+
 <div class="container">
     {% for post in posts %}
-    <div class="row mb-4">
-        <div class="col-md-8">
-            <h6 class="autor">{{ post.autor }}</h6>
-            <h5 class="titulo">{{ post.titulo }}</h5>
-            <p class="descripcion">{{ post.contenido | truncatechars:150 }}</p>
-            <a href="{% url 'news:post_detail' post.pk %}" class="leer-mas">Seguir leyendo...</a>
-        </div>
-        <div class="col-md-4">
-            <img src="{{ post.imagen.url }}" class="img-fluid" alt="{{ post.titulo }}">
+    <div class="row mb-4 align-items-center card"> {# Añadimos align-items-center para centrado vertical #}
+        <div class="col-md-8 card-body text-center"> {# Contenido a la izquierda, ocupando 8 de 12 columnas en pantallas medianas y grandes #}
+            
+            <h3 class="titulo card-title">{{ post.titulo }}</h3>
+
+            <div class="row mb-4 align-items-center"> <!-- Contenedor de fila para las columnas -->
+                <div class="col-md-4 d-flex justify-content-center"> <!-- Imagen a la izquierda, ocupando 4 de 12 columnas -->
+                    {% if post.imagen_destacada %}
+                        <img src="{{ post.imagen_destacada.url }}" class="img-fluid rounded" alt="{{ post.titulo }}"> <!-- img-fluid para responsividad, rounded para bordes -->
+                    {% else %}
+                        <img src="https://placehold.co/400x300/e0e0e0/555555?text=Sin+Imagen" class="img-fluid rounded" alt="Sin imagen"> <!-- Placeholder si no hay imagen -->
+                    {% endif %}
+                </div>
+
+                <div class="col-md-8"> <!-- Descripción a la derecha, ocupando 8 de 12 columnas -->
+                    <p class="descripcion card-text">{{ post.contenido | truncatechars:150 }}</p>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center">
+                <h6 class="autor">Autor: {{ post.autor }}</h6>
+                <p class="fecha">Fecha: {{ post.fecha_publicacion|date:"d M Y" }}</p>
+            </div>
+            <a href="{% url 'news:post_detail' post.pk %}" class="leer-mas d-block text-start">Seguir leyendo...</a> {# d-block para que ocupe su propia línea, text-start para alinear a la izquierda #}
         </div>
     </div>
     <hr>
     {% endfor %}
 </div>
-{% endblock %}
+
+{% endblock content %}

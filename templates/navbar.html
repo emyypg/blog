@@ -1,41 +1,52 @@
-<header
-    class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-    <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-            <svg class="bi" width="40" height="32" role="img" aria-label="Bootstrap">
-                <use xlink:href="#bootstrap"></use>
-            </svg>
-        </a>
-    </div>
-    <ul class="nav col-0 col-md-auto mb-2 justify-content-left mb-md-0">
-        <li class="nav-item">   
-        <li id="icono-izquierda"><h3>DevNews<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu" viewBox="0 0 16 16">
-                </svg></li></ul></li>
-    
-    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        
-        <li class="nav-item">
-            
-            
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-        
-        <li><a href="{% url 'news:home' %}" class="nav-link px-2">Noticias</a></li> 
-        <li><a href="#" class="nav-link px-2">Nosotros</a></li>
-        <li><a href="#" class="nav-link px-2">Contacto</a></li>
+{% load static %}
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom container">
+    <ul class="d-flex align-items-center nav col-0 col-md-auto mb-2 justify-content-left mb-md-0">
+        <li class="col-6 logo">
+            <a href="{% url 'news:home' %}">
+                <img src="{% static 'img/favicon.svg' %}" class="img-thumbnail logo" alt="logo">
+            </a>
+        </li>
+        <li class="col-6 d-flex align-items-center h3">
+            DevNews
+            {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu ms-2" viewBox="0 0 16 16"></svg> {% endcomment %}
+        </li>
     </ul>
 
-    <div class="col-md-3 text-end">
+    {% with request.resolver_match.url_name as url_name %}
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+        {% comment %} <li class="nav-item">
+        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li> {% endcomment %}
+        <li class="nav-item">
+            <a href="{% url 'news:home' %}" class="nav-link px-2 {% if url_name == 'news:home' %}active{% endif %}">Noticias</a>
+        </li> 
+        <li class="nav-item">
+            <a href="{% url 'nosotros' %}" class="nav-link px-2 {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
+        </li>
+        {% comment %} <li class="nav-item">
+            <a href="#" class="nav-link px-2">Contacto</a>
+        </li> {% endcomment %}
+    </ul>
+    {% endwith %}
+
+    <div class="col-md-3 col-6 d-flex justify-content-center align-items-center">
         {% if user.is_authenticated %}
-            Bienvenido {{ user.username }}
-            <form action="{% url 'usuarios:logout' %}" method="post" style="display: inline;">
+            <p class="bienvenido text-center centered flex-fill me-2 d-flex align-items-center">Bienvenido {{ user.username }} </p>
+            <form action="{% url 'usuarios:logout' %}" method="post" style="" class="p-0 m-0">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary">Cerrar sesión</button>
             </form>
         {% else %}
-            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link" href="{% url 'usuarios:login' %}"> iniciar
-                sesion</a></button>
-            <button type="button" class="btn btn-outline-primary me-2"><a class="nav-link"
-                href="{% url 'usuarios:registro' %}">Registrar</a></button>
+            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill">
+                <a class="nav-link" href="{% url 'usuarios:login' %}"> 
+                iniciar sesión
+                </a>
+            </button>
+            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill">
+                <a class="nav-link"
+                href="{% url 'usuarios:registro' %}">
+                Registrarse
+                </a>
+            </button>
         {% endif %}
     </div>
 </header>
