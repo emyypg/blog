@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Categoria, Post, Comentario
+from apps.usuarios.models import Usuario
 
 
 @admin.register(Categoria)
@@ -40,3 +41,5 @@ class ComentarioAdmin(admin.ModelAdmin):
     def contenido_corto(self, obj):
         return obj.contenido[:40] + ('...' if len(obj.contenido) > 40 else '')
     contenido_corto.short_description = 'Contenido'
+
+admin.site.register(Usuario)

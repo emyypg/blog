@@ -52,13 +52,13 @@
         <br>
         <button type="submit">Entrar</button> 
     </form>
-    
     <br>
     <br>
-    <h2>¿No tienes una cuenta?</h2>
-    <h3><a href="{% url 'usuarios:registro' %}" style="color: #d81ce9;">Registrarse</a></h3>
-</div>
+    <div class="text-center my-4">
+        <h2 class="mb-3">¿No tienes una cuenta?</h2>
+        <h3>
+            <a href="{% url 'usuarios:registro' %}" class="text-decoration-none" style="color: #d81ce9;">Registrarse</a>
+        </h3>
+    </div>
 
 {% endblock content %}  
-
-    

@@ -8,14 +8,11 @@
         </li>
         <li class="col-6 d-flex align-items-center h3">
             DevNews
-            {% comment %} <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-cpu ms-2" viewBox="0 0 16 16"></svg> {% endcomment %}
         </li>
     </ul>
 
     {% with request.resolver_match.url_name as url_name %}
     <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        {% comment %} <li class="nav-item">
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li> {% endcomment %}
         <li class="nav-item">
             <a href="{% url 'news:home' %}" class="nav-link px-2 {% if url_name == 'news:home' %}active{% endif %}">Noticias</a>
         </li> 
@@ -33,15 +30,15 @@
             <p class="bienvenido text-center centered flex-fill me-2 d-flex align-items-center">Bienvenido {{ user.username }} </p>
             <form action="{% url 'usuarios:logout' %}" method="post" style="" class="p-0 m-0">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary">Cerrar sesión</button>
+                <button type="submit" class="btn  btn-outline-primary me-2 btn-lg flex-fill btn-sesion">Cerrar sesión</button>
             </form>
         {% else %}
-            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill">
+            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill btn-sesion">
                 <a class="nav-link" href="{% url 'usuarios:login' %}"> 
                 iniciar sesión
                 </a>
             </button>
-            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill">
+            <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill btn-sesion">
                 <a class="nav-link"
                 href="{% url 'usuarios:registro' %}">
                 Registrarse
