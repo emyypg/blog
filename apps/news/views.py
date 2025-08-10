@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, Http404
 from .models import Categoria, Post, Comentario # Asegúrate de importar tu modelo Post
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, ContactoForm
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_POST
 from django.db.models import Q
@@ -265,3 +265,12 @@ def like_comentario(request, pk):
     else:
         comentario.me_gusta.add(request.user)
     return redirect('news:post_detail', pk=comentario.post.pk)
+
+def contacto(request):
+    data = {
+        'form': ContactoForm()
+    }
+    if request.method == 'POST':
+           ContactoForm(data=request.POST).save()
+
+    return render(request, 'contacto/formulario.html', data)

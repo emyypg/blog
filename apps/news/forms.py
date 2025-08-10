@@ -1,7 +1,7 @@
 # apps/news/forms.py
 
 from django import forms
-from .models import Post, Categoria, Comentario # <--- Make sure Comentario is imported
+from .models import Post, Categoria, Comentario, Contacto # <--- Make sure Comentario is imported
 from django.utils import timezone
 
 
@@ -46,3 +46,9 @@ class CommentForm(forms.ModelForm):
                 'placeholder': 'Edita tu comentario...'
             }),
         }
+
+class ContactoForm(forms.ModelForm):
+
+    class Meta:
+        model = Contacto
+        fields = "__all__"
