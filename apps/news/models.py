@@ -96,6 +96,7 @@ class Contacto(models.Model):
     correo = models.EmailField()
     asunto = models.CharField(max_length=40)
     texto = models.TextField()
+    fecha_recepcion = models.DateTimeField(auto_now_add=True) # <-- Añade esta línea
 
     def __str__(self) -> str:
         return self.nombre

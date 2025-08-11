@@ -5,69 +5,33 @@
 
 {% block content %}
 
-<div class="login-container"> 
+<div class="login-container">
     <h2>CONTÁCTANOS</h2>
     <br>
 
-    <form method="POST" class="login-form"> 
+    <form method="POST" class="login-form">
         {% csrf_token %}
 
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger error-message" style="text-align: center;">
-                {% for error in form.non_field_errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {# Muestra mensajes de éxito si el formulario se envió correctamente #}
-        {% if form.is_valid and not form.cleaned_data %}
-            <div class="alert alert-success success-message" style="text-align: center;">
-                <p>¡Gracias por contactarnos! Tu mensaje ha sido enviado correctamente.</p>
-            </div>
-        {% endif %}
-
-        {# Campo de Nombre #}
         <div class="form-group">
             <label for="{{ form.nombre.id_for_label }}">Tu nombre:</label>
             {{ form.nombre }}
-            {% if form.nombre.errors %}
-                <div class="error-message">
-                    {% for error in form.nombre.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.correo.id_for_label }}">Tu email:</label>
+            {{ form.correo }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.texto.id_for_label }}">Tu mensaje:</label>
+            {{ form.texto }}
         </div>
 
-        {# Campo de Email #}
-        <div class="form-group">
-            <label for="{{ form.email.id_for_label }}">Tu email:</label>
-            {{ form.email }}
-            {% if form.email.errors %}
-                <div class="error-message">
-                    {% for error in form.email.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-
-        {# Campo de Mensaje #}
-        <div class="form-group">
-            <label for="{{ form.mensaje.id_for_label }}">Tu mensaje:</label>
-            {{ form.mensaje }}
-            {% if form.mensaje.errors %}
-                <div class="error-message">
-                    {% for error in form.mensaje.errors %}
-                        <p>{{ error }}</p>
-                    {% endfor %}
-                </div>
-            {% endif %}
+        {# Campo "asunto" oculto para la validación del formulario #}
+        <div style="display: none;">
+            {{ form.asunto }}
         </div>
 
         <br>
-        <button type="submit">Enviar Mensaje</button> 
+        <button type="submit">Enviar Mensaje</button>
     </form>
 </div>
 

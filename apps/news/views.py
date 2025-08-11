@@ -8,6 +8,7 @@ from django.views.decorators.http import require_POST
 from django.db.models import Q
 from django.views import View
 from django.urls import reverse_lazy
+from django.contrib import messages
 
 # Vista principal del sitio (usa index.html que extiende de base.html)
 def index(request):
@@ -267,10 +268,14 @@ def like_comentario(request, pk):
     return redirect('news:post_detail', pk=comentario.post.pk)
 
 def contacto(request):
-    data = {
-        'form': ContactoForm()
-    }
     if request.method == 'POST':
-           ContactoForm(data=request.POST).save()
-
+        form = ContactoForm(data=request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, '¡Gracias por contactarnos! Tu mensaje ha sido enviado correctamente.')
+            return redirect('news:contacto')
+    else:
+        form = ContactoForm()
+    
+    data = {'form': form}
     return render(request, 'contacto/formulario.html', data)

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Categoria, Post, Comentario
+from .models import Categoria, Post, Comentario, Contacto
 from apps.usuarios.models import Usuario
 
 
@@ -42,4 +42,18 @@ class ComentarioAdmin(admin.ModelAdmin):
         return obj.contenido[:40] + ('...' if len(obj.contenido) > 40 else '')
     contenido_corto.short_description = 'Contenido'
 
+class ContactoAdmin(admin.ModelAdmin):
+    list_display = ('nombre', 'correo', 'asunto', 'fecha_recepcion') # Muestra estas columnas
+    list_filter = ('fecha_recepcion',) # Permite filtrar por fecha
+    search_fields = ('nombre', 'correo', 'asunto') # Permite buscar por estos campos
+    readonly_fields = ('fecha_recepcion',) # Hace que el campo sea solo de lectura
+
+# Asumiendo que has añadido un campo 'fecha_recepcion' en tu modelo Contacto:
+# class Contacto(models.Model):
+#     ...
+#     fecha_recepcion = models.DateTimeField(auto_now_add=True)
+#     ...
+
+# Y registra el modelo con la clase de personalización
+admin.site.register(Contacto, ContactoAdmin)
 admin.site.register(Usuario)
