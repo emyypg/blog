@@ -13,6 +13,9 @@
                     <li class="nav-item">
                         <a href="{% url 'nosotros' %}" class="nav-link px-2 text-body-secondary {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{% url 'news:contacto' %}" class="nav-link px-2 text-body-secondary {% if url_name == 'contacto' %}active{% endif %}">Contacto</a>
+                    </li> 
                 </ul>
                 {% endwith %}
             </div>
