@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %} CONTACTO {% endblock titulo %}
+
+{% block content %}
+
+<div class="login-container">
+    <h2>CONTÁCTANOS</h2>
+    <br>
+
+    <form method="POST" class="login-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.nombre.id_for_label }}">Tu nombre:</label>
+            {{ form.nombre }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.correo.id_for_label }}">Tu email:</label>
+            {{ form.correo }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.texto.id_for_label }}">Tu mensaje:</label>
+            {{ form.texto }}
+        </div>
+
+        {# Campo "asunto" oculto para la validación del formulario #}
+        <div style="display: none;">
+            {{ form.asunto }}
+        </div>
+
+        <br>
+        <button type="submit">Enviar Mensaje</button>
+    </form>
+</div>
+
+{% endblock content %}

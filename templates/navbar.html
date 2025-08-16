@@ -19,22 +19,24 @@
         <li class="nav-item">
             <a href="{% url 'nosotros' %}" class="nav-link px-2 {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
         </li>
-        {% comment %} <li class="nav-item">
-            <a href="#" class="nav-link px-2">Contacto</a>
-        </li> {% endcomment %}
+        <li class="nav-item">
+            <a href="{% url 'news:contacto' %}" class="nav-link px-2 {% if url_name == 'contacto' %}active{% endif %}">Contacto</a>
+        </li> 
     </ul>
     {% endwith %}
 
     <div class="col-md-3 col-6 d-flex justify-content-center align-items-center">
         {% if user.is_authenticated %}
             <p class="bienvenido text-center centered flex-fill me-2 d-flex align-items-center">Bienvenido {{ user.username }} </p>
-            <form action="{% url 'usuarios:logout' %}" method="post" style="" class="p-0 m-0">
-                {% csrf_token %}
-                <button type="submit" class="btn  btn-outline-primary me-2 btn-lg flex-fill btn-sesion">Cerrar sesión</button>
-            </form>
+            <div class="d-flex align-items-center">
+                <form action="{% url 'usuarios:logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary me-2 btn-lg btn-sesion">Cerrar sesión</button>
+                </form>
+            </div>
         {% else %}
             <button type="button" class="btn btn-outline-primary me-2 btn-lg flex-fill btn-sesion">
-                <a class="nav-link" href="{% url 'usuarios:login' %}"> 
+                <a class="nav-link" href="{% url 'usuarios:login' %}">
                 iniciar sesión
                 </a>
             </button>

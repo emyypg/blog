@@ -1,7 +1,7 @@
-<div class="border-top my-3"></div>
+<div class="border-top my-2"></div>
 
 <div class="container">
-    <footer class="py-4 my-4 border-top">
+    <footer class="">
         <div class="row">
             <div class="col text-center">
                 <h5 class="text-uppercase">Navegación</h5>
@@ -13,10 +13,15 @@
                     <li class="nav-item">
                         <a href="{% url 'nosotros' %}" class="nav-link px-2 text-body-secondary {% if url_name == 'nosotros' %}active{% endif %}">Nosotros</a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{% url 'news:contacto' %}" class="nav-link px-2 text-body-secondary {% if url_name == 'contacto' %}active{% endif %}">Contacto</a>
+                    </li> 
                 </ul>
                 {% endwith %}
             </div>
         </div>
+
+        <hr style="width: 50%; margin: auto;">
 
         <div class="text-center">
             <p class="text-body-secondary mb-1">Grupo 11 del Informatorio 2025</p>

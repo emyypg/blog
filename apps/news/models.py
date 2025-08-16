@@ -90,3 +90,13 @@ class Comentario(models.Model):
     # ✅ Método útil para contar me gusta
     def cantidad_likes(self):
         return self.me_gusta.count()
+    
+class Contacto(models.Model):
+    nombre = models.CharField(max_length=60)
+    correo = models.EmailField()
+    asunto = models.CharField(max_length=40)
+    texto = models.TextField()
+    fecha_recepcion = models.DateTimeField(auto_now_add=True) # <-- Añade esta línea
+
+    def __str__(self) -> str:
+        return self.nombre
