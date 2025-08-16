@@ -145,7 +145,7 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Media files
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 AUTH_USER_MODEL = 'usuarios.Usuario'  # Asegúrate de que tu modelo de usuario personalizado esté configurado correctamente
 LOGIN_REDIRECT_URL = reverse_lazy('news:home')
